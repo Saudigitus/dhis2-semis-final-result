@@ -18,8 +18,8 @@ export default function FinalResult() {
   const [selected, setSelected] = useState([])
   const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0 })
   const { academicYear, grade, class: section, schoolName, school } = urlParameters();
-  const { getData, tableData, loading } = useTableData({ module: Modules.Final_Result, selectedDataStore: dataStoreData });
-  const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], module: Modules.Final_Result });
+  const { getData, tableData, loading } = useTableData({ module: Modules.Final_Result });
+  const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: dataStoreData?.['final-result']?.programStage as unknown as string });
   const [filetrState, setFilterState] = useState<{ dataElements: any[], attributes: any[] }>({ attributes: [], dataElements: [] });
   const refetch = useRecoilValue(TableDataRefetch);
 
