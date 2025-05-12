@@ -86,6 +86,9 @@ export default function Router() {
                                             value: 'Grade 7'
                                         }
                                     ]
+                                },
+                                orgunits: {
+                                    options: []
                                 }
                             }} />}>
                         <Outlet />
