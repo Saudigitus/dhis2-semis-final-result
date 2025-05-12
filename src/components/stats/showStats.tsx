@@ -15,7 +15,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
     const programsValues = useProgramsKeys();
     const programData = programsValues[0];
     const { viewPortWidth } = useViewPortWidth();
-    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], module: Modules.Enrollment });
+    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: dataStoreData?.registration?.programStage as unknown as string });
     const setRefetch = useSetRecoilState(TableDataRefetch);
 
     return (
@@ -53,7 +53,6 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                                 programConfig={programData}
                                 viewPortWidth={viewPortWidth}
                                 columns={columns}
-                                totalElements={4}
                                 tableData={stats.conflicts}
                                 showHeaderFilters={false}
                                 showWorkingListsContainer={false}
