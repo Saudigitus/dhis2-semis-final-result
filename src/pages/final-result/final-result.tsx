@@ -2,7 +2,6 @@ import { useRecoilValue } from 'recoil';
 import { ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
 import { TableDataRefetch, Modules } from "dhis2-semis-types"
-import { IconDelete24 } from "@dhis2/ui";
 import { InfoPage, useDataStoreKey } from 'dhis2-semis-components'
 import { Table, useProgramsKeys } from "dhis2-semis-components";
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
@@ -23,36 +22,27 @@ export default function FinalResult() {
   const [filetrState, setFilterState] = useState<{ dataElements: any[], attributes: any[] }>({ attributes: [], dataElements: [] });
   const refetch = useRecoilValue(TableDataRefetch);
 
-  const rowsActions = [
-    { icon: <IconDelete24 />, color: '#d64d4d', label: `Delete`, disabled: false, loading: false, onClick: (e: any) => { console.log(e) } },
-  ];
-
   useEffect(() => {
     setSelected([])
     void getData({
       page: pagination.page,
       pageSize: pagination.pageSize,
       program: programData.id as string,
-      orgUnit: "Shc3qNhrPAz",
+      orgUnit: school!,
       baseProgramStage: dataStoreData?.registration?.programStage as string,
       attributeFilters: filetrState.attributes,
-      dataElementFilters: filetrState.dataElements
+      dataElementFilters: [
+        ...(academicYear ? [`${dataStoreData.registration.academicYear}:in:${academicYear}`] : []),
+        ...(grade ? [`${dataStoreData.registration.grade}:in:${grade}`] : []),
+        ...(section ? [`${dataStoreData.registration.section}:in:${section}`] : []),
+      ],
+      otherProgramStage: dataStoreData?.['final-result']?.programStage
     })
-  }, [filetrState, refetch, pagination.page, pagination.pageSize])
+  }, [filetrState, refetch, pagination.page, pagination.pageSize, academicYear, grade, section, school])
 
   useEffect(() => {
     setPagination((prev) => ({ ...prev, totalPages: tableData.pagination.totalPages }))
   }, [tableData])
-
-  useEffect(() => {
-    const filters = [
-      academicYear && `${dataStoreData.registration.academicYear}:in:${academicYear}`,
-      grade && `${dataStoreData.registration.grade}:in:${grade}`,
-      section && `${dataStoreData.registration.section}:in:${section}`,
-    ]
-    setFilterState({ dataElements: filters, attributes: [] })
-  }, [academicYear, grade, section])
-
 
   return (
     <div style={{ height: "85vh" }}>
@@ -78,9 +68,6 @@ export default function FinalResult() {
               viewPortWidth={viewPortWidth}
               columns={columns}
               tableData={tableData.data}
-              rowAction={rowsActions}
-              defaultFilterNumber={3}
-              showRowActions
               filterState={filetrState}
               loading={loading}
               rightElements={<EnrollmentActionsButtons selected={selected} filetrState={filetrState} selectedDataStoreKey={dataStoreData} programData={programData as unknown as ProgramConfig} />}

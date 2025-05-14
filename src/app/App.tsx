@@ -7,11 +7,11 @@ import { HashRouter } from 'react-router-dom'
 const MyApp = () => {
 
     return (
-        // <AppWrapper dataStoreKey='semis/values'>
-        //     <HashRouter>
+        <AppWrapper dataStoreKey='dataStore/semis/values'>
+            <HashRouter>
                 <Router />
-        //     </HashRouter>
-        // </AppWrapper>
+            </HashRouter>
+        </AppWrapper>
     )
 }
 
