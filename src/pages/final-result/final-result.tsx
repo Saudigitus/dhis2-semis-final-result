@@ -70,7 +70,7 @@ export default function FinalResult() {
               tableData={tableData.data}
               filterState={filetrState}
               loading={loading}
-              rightElements={<EnrollmentActionsButtons selected={selected} filetrState={filetrState} selectedDataStoreKey={dataStoreData} programData={programData as unknown as ProgramConfig} />}
+              rightElements={<EnrollmentActionsButtons selected={selected} selectedDataStoreKey={dataStoreData} programData={programData as unknown as ProgramConfig} />}
               setFilterState={setFilterState}
               selectable={true}
               selected={selected}
