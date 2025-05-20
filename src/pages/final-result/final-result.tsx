@@ -6,6 +6,7 @@ import { InfoPage, useDataStoreKey } from 'dhis2-semis-components'
 import { Table, useProgramsKeys } from "dhis2-semis-components";
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
 import { useGetSectionTypeLabel, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
+import { useFinalResultConst } from '../../hooks/common/finalResultConst';
 
 export default function FinalResult() {
   const { sectionName } = useGetSectionTypeLabel();
@@ -15,13 +16,16 @@ export default function FinalResult() {
   const { viewPortWidth } = useViewPortWidth();
   const { urlParameters } = useUrlParams();
   const [selected, setSelected] = useState([])
+  const [updatedData, updateData] = useState([])
   const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0 })
   const { academicYear, grade, class: section, schoolName, school, sectionType } = urlParameters();
   const { getData, tableData, loading } = useTableData({ module: Modules.Final_Result });
   const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: dataStoreData?.['final-result']?.programStage as unknown as string });
   const [filetrState, setFilterState] = useState<{ dataElements: any[], attributes: any[] }>({ attributes: [], dataElements: [] });
   const refetch = useRecoilValue(TableDataRefetch);
+  const { finalResultConst } = useFinalResultConst({ updateData, data:tableData.data })
 
+  // console.log(programData?.programStages.find(x => x.id === dataStoreData?.['final-result']?.programStage)?.programStageDataElements?.find(x=>x.dataElement.id===))
   useEffect(() => {
     setSelected([])
     void getData({
@@ -42,6 +46,7 @@ export default function FinalResult() {
 
   useEffect(() => {
     setPagination((prev) => ({ ...prev, totalPages: tableData.pagination.totalPages }))
+    if (tableData.data.length > 0) finalResultConst()
   }, [tableData])
 
   return (
@@ -67,7 +72,7 @@ export default function FinalResult() {
               title="Final Results"
               viewPortWidth={viewPortWidth}
               columns={columns}
-              tableData={tableData.data}
+              tableData={updatedData}
               filterState={filetrState}
               loading={loading}
               rightElements={<EnrollmentActionsButtons selected={selected} selectedDataStoreKey={dataStoreData} programData={programData as unknown as ProgramConfig} />}
