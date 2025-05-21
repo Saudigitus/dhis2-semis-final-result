@@ -21,9 +21,8 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
         {
             label: <DataImporter
                 baseURL='http://localhost:8080'
-                importMode='COMMIT'
                 label={'Bulk Final Result'}
-                module='final-result'
+                module='attendance'
                 onError={(e: any) => { console.log(e) }}
                 programConfig={programData}
                 sectionType={sectionName}
@@ -45,7 +44,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 ]}
                 fileName='teste'
                 label='Export Final Result'
-                module='final-result'
+                module='attendance'
                 onError={(e: any) => console.log(e)}
                 programConfig={programData}
                 sectionType={sectionName}
