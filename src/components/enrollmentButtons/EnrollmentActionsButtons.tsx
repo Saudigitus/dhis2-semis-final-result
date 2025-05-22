@@ -44,7 +44,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 ]}
                 fileName='teste'
                 label='Export Final Result'
-                module='attendance'
+                module='final-result'
                 onError={(e: any) => console.log(e)}
                 programConfig={programData}
                 sectionType={sectionName}
