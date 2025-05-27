@@ -9,9 +9,11 @@ import { DataExporter, DataImporter, CustomDropdown as DropdownButton } from 'dh
 import AsssignFinalResult from '../assingFinalResult/assignFinalResult';
 import PerformPromotion from '../perforPromotion/performPromotion';
 import ShowStats from '../stats/showStats';
+import { useConfig } from '@dhis2/app-runtime';
 
 function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
     const { urlParameters } = useUrlParams();
+    const { baseUrl } = useConfig()
     const { school: orgUnit, class: section, grade, academicYear } = urlParameters();
     const { sectionName } = useGetSectionTypeLabel();
     const [stats, setStats] = useState<{ posted: number, conflicts: any[] }>({ posted: 0, conflicts: [] })
@@ -20,8 +22,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const enrollmentOptions: any = [
         {
             label: <DataImporter
-                baseURL='http://localhost:8080'
-                importMode='COMMIT'
+                baseURL={baseUrl}
                 label={'Bulk Final Result'}
                 module='final-result'
                 onError={(e: any) => { console.log(e) }}
@@ -37,7 +38,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
         {
             label: <DataExporter
                 Form={Form}
-                baseURL='http://localhost:8080'
+                baseURL={baseUrl}
                 eventFilters={[
                     ...(academicYear ? [`${selectedDataStoreKey.registration.academicYear}:in:${academicYear}`] : []),
                     ...(grade ? [`${selectedDataStoreKey.registration.grade}:in:${grade}`] : []),
