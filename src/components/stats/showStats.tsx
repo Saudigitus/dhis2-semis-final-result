@@ -1,19 +1,17 @@
 import { Button, ButtonStrip, IconCheckmarkCircle16, Tag } from "@dhis2/ui";
-import { ModalComponent, SummaryCard, Table, useDataStoreKey, useProgramsKeys, WithPadding } from "dhis2-semis-components";
+import { ModalComponent, SummaryCard, Table, WithPadding } from "dhis2-semis-components";
 import { InfoOutlined } from "@material-ui/icons";
 import styles from './showStats.module.css'
 import { Collapse } from "@mui/material";
 import { useState } from "react";
-import { useGetSectionTypeLabel, useHeader, useViewPortWidth } from "dhis2-semis-functions";
-import { Modules, ProgramConfig, TableDataRefetch } from "dhis2-semis-types";
+import { useHeader, useViewPortWidth } from "dhis2-semis-functions";
+import { ProgramConfig, TableDataRefetch } from "dhis2-semis-types";
 import { useSetRecoilState } from "recoil";
+import useGetSelectedKeys from "../../config/useGetSelectedKeys";
 
 export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: boolean) => void, open: boolean, stats: any }) {
     const [showDetails, setShowDetails] = useState(false)
-    const { sectionName } = useGetSectionTypeLabel();
-    const dataStoreData = useDataStoreKey({ sectionType: sectionName });
-    const programsValues = useProgramsKeys();
-    const programData = programsValues[0];
+    const { dataStoreData, program: programData } = useGetSelectedKeys();
     const { viewPortWidth } = useViewPortWidth();
     const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: dataStoreData?.registration?.programStage as unknown as string });
     const setRefetch = useSetRecoilState(TableDataRefetch);

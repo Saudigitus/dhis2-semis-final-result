@@ -1,19 +1,18 @@
-import { useBuildForm, useUrlParams } from "dhis2-semis-functions";
 import { useState } from "react";
-import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
-import { Modules } from 'dhis2-semis-types';
-import { useDataStoreKey, WithBorder, useProgramsKeys, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
-import { Form } from "react-final-form";
-import { staticForm } from "../../constants/searchEnrollmentForm";
 import { format } from "date-fns";
+import { Form } from "react-final-form";
+import { Modules } from 'dhis2-semis-types';
+import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
+import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import { staticForm } from "../../constants/searchEnrollmentForm";
+import { useBuildForm, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
+import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
 
 export default function PerformPromotion({ selected, setStats, openStats }: { openStats: (args: boolean) => void, setStats: any, selected: any[] }) {
-    const programsValues = useProgramsKeys();
     const { urlParameters } = useUrlParams()
     const { schoolName } = urlParameters()
-    const programData = programsValues[0];
-    const dataStoreData = useDataStoreKey({ sectionType: "student" });
+    const { dataStoreData, program: programData } = useGetSelectedKeys()
     const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });
     const [enrollmentDetails = []] = formData;
     const [open, setOpen] = useState(false)

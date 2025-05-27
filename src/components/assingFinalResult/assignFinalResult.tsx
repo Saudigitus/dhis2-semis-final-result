@@ -1,16 +1,16 @@
-import { useGetDataElements, useUrlParams, useUploadEvents, useGetEvents } from "dhis2-semis-functions";
 import { useState } from "react";
-import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
-import { useDataStoreKey, WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis-components";
 import { Form } from "react-final-form";
-import { TableDataRefetch } from "dhis2-semis-types";
 import { useSetRecoilState } from "recoil";
+import { TableDataRefetch } from "dhis2-semis-types";
+import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
+import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis-components";
+import { useGetDataElements, useUploadEvents, useGetEvents } from "dhis2-semis-functions";
 
 export default function AsssignFinalResult({ selected }: { selected: any[] }) {
-    const { urlParameters } = useUrlParams()
-    const { sectionType } = urlParameters()
-    const { "final-result": fr } = useDataStoreKey({ sectionType: sectionType as unknown as "student" | "staff" })
-    const { dataElements } = useGetDataElements({ programStageId: fr?.programStage as unknown as string, type: "programStage" })
+    const { dataStoreData } = useGetSelectedKeys()
+    const { "final-result": finalResult } = dataStoreData
+    const { dataElements } = useGetDataElements({ programStageId: finalResult?.programStage as unknown as string, type: "programStage" })
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { uploadValues } = useUploadEvents()
@@ -23,7 +23,11 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
         let frStatus = Object.keys(values)[0]
 
         for (const tei of selected) {
-            const frEvents = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: fr?.programStage })
+            const frEvents = await getEvents({
+                program: tei.programId, fields: "*",
+                trackedEntity: tei.trackedEntity,
+                programStage: finalResult?.programStage
+            })
             const enrollmentEvent = frEvents.find((x: any) => x.enrollment === tei.enrollmentId)
 
             events.push({

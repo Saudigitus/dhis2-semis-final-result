@@ -1,16 +1,13 @@
-import { useGetEvents, useGetSectionTypeLabel, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
-import { useDataStoreKey, useProgramsKeys } from "dhis2-semis-components";
 import { format } from "date-fns";
+import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import { useGetEvents, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
 
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {
     const { getEvents } = useGetEvents()
-    const { sectionName } = useGetSectionTypeLabel();
-    const dataStoreData = useDataStoreKey({ sectionType: sectionName });
     const { urlParameters } = useUrlParams();
     const { school: orgUnit } = urlParameters();
-    const programsValues = useProgramsKeys();
-    const programData = programsValues[0];
     const { uploadValues } = useUploadEvents()
+    const { dataStoreData, program: programData } = useGetSelectedKeys()
 
     async function promote(values: any) {
         setLoading(true)
@@ -29,7 +26,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
         })
 
         const getEventStructure = (stage: string, datavalues: any[]) => {
-            return { occurredAt: date, notes: [], status: "ACTIVE", program: programData.id, programStage: stage, orgUnit, scheduledAt: date, dataValues: datavalues }
+            return { occurredAt: date, notes: [], status: "ACTIVE", program: programData?.id, programStage: stage, orgUnit, scheduledAt: date, dataValues: datavalues }
         }
 
         for (const tei of selected) {
@@ -66,7 +63,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                             {
                                 occurredAt: date,
                                 enrolledAt: values.enrollment_date,
-                                program: programData.id,
+                                program: programData?.id,
                                 orgUnit,
                                 status: "COMPLETED",
                                 events: events
