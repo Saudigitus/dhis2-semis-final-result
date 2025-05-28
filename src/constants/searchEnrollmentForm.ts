@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { VariablesTypes, GroupFormProps } from 'dhis2-semis-types'
+import { VariablesTypes } from 'dhis2-semis-types'
 
 export const staticForm = () => {
   return {

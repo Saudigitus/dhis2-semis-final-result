@@ -1,21 +1,19 @@
 import { useRecoilValue } from 'recoil';
+import { Table } from "dhis2-semis-components";
+import { InfoPage } from 'dhis2-semis-components'
 import { ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
 import { TableDataRefetch, Modules } from "dhis2-semis-types"
-import { InfoPage, useDataStoreKey } from 'dhis2-semis-components'
-import { Table, useProgramsKeys } from "dhis2-semis-components";
-import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
-import { useGetSectionTypeLabel, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
+import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 import { useFinalResultConst } from '../../hooks/common/finalResultConst';
+import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
+import { useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 
 export default function FinalResult() {
-  const { sectionName } = useGetSectionTypeLabel();
-  const dataStoreData = useDataStoreKey({ sectionType: sectionName });
-  const programsValues = useProgramsKeys();
-  const programData = programsValues[0];
   const { viewPortWidth } = useViewPortWidth();
   const { urlParameters } = useUrlParams();
   const [selected, setSelected] = useState([])
+  const { dataStoreData, program: programData } = useGetSelectedKeys()
   const [updatedData, updateData] = useState([])
   const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0, totalElements: 0 })
   const { academicYear, grade, class: section, schoolName, school, sectionType } = urlParameters();
@@ -25,13 +23,12 @@ export default function FinalResult() {
   const refetch = useRecoilValue(TableDataRefetch);
   const { finalResultConst } = useFinalResultConst({ updateData, data: tableData.data })
 
-  // console.log(programData?.programStages.find(x => x.id === dataStoreData?.['final-result']?.programStage)?.programStageDataElements?.find(x=>x.dataElement.id===))
   useEffect(() => {
     setSelected([])
     void getData({
       page: pagination.page,
       pageSize: pagination.pageSize,
-      program: programData.id as string,
+      program: programData?.id as string,
       orgUnit: school!,
       baseProgramStage: dataStoreData?.registration?.programStage as string,
       attributeFilters: filetrState.attributes,
@@ -68,7 +65,7 @@ export default function FinalResult() {
           :
           <>
             <Table
-              programConfig={programData}
+              programConfig={programData!}
               title="Final Results"
               viewPortWidth={viewPortWidth}
               columns={columns}

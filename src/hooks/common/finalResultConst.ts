@@ -1,13 +1,9 @@
-import { useDataStoreKey, useProgramsKeys } from "dhis2-semis-components";
-import { useGetSectionTypeLabel } from "dhis2-semis-functions";
 import '../../assets/style/colors.css'
 import { statusComponent } from "../../components/status/status";
+import useGetSelectedKeys from "../config/useGetSelectedKeys";
 
 export const useFinalResultConst = ({ updateData, data }: { data: any[], updateData: (args: any) => void }) => {
-    const { sectionName } = useGetSectionTypeLabel();
-    const dataStoreData = useDataStoreKey({ sectionType: sectionName });
-    const programsValues = useProgramsKeys();
-    const programData = programsValues[0];
+    const { dataStoreData, program: programData } = useGetSelectedKeys()
     const stage = dataStoreData?.['final-result']?.programStage
     const status = dataStoreData?.['final-result']?.status
 
