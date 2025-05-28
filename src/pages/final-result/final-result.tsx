@@ -18,7 +18,7 @@ export default function FinalResult() {
   const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0, totalElements: 0 })
   const { academicYear, grade, class: section, schoolName, school, sectionType } = urlParameters();
   const { getData, tableData, loading } = useTableData({ module: Modules.Final_Result });
-  const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: dataStoreData?.['final-result']?.programStage as unknown as string });
+  const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: dataStoreData?.['final-result']?.programStage as unknown as string });
   const [filetrState, setFilterState] = useState<{ dataElements: any[], attributes: any[] }>({ attributes: [], dataElements: [] });
   const refetch = useRecoilValue(TableDataRefetch);
   const { finalResultConst } = useFinalResultConst({ updateData, data: tableData.data })

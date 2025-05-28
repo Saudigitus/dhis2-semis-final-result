@@ -13,7 +13,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
     const [showDetails, setShowDetails] = useState(false)
     const { dataStoreData, program: programData } = useGetSelectedKeys();
     const { viewPortWidth } = useViewPortWidth();
-    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: dataStoreData?.registration?.programStage as unknown as string });
+    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: dataStoreData?.registration?.programStage as unknown as string });
     const setRefetch = useSetRecoilState(TableDataRefetch);
 
     return (

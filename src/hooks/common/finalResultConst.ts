@@ -1,4 +1,3 @@
-import '../../assets/style/colors.css'
 import { statusComponent } from "../../components/status/status";
 import useGetSelectedKeys from "../config/useGetSelectedKeys";
 
