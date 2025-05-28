@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useHeader, useViewPortWidth } from "dhis2-semis-functions";
 import { ProgramConfig, TableDataRefetch } from "dhis2-semis-types";
 import { useSetRecoilState } from "recoil";
-import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 
 export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: boolean) => void, open: boolean, stats: any }) {
     const [showDetails, setShowDetails] = useState(false)
@@ -48,7 +48,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                     <Collapse in={showDetails} style={{ marginBottom: "20px" }} >
                         <WithPadding>
                             <Table
-                                programConfig={programData}
+                                programConfig={programData!}
                                 viewPortWidth={viewPortWidth}
                                 columns={columns}
                                 tableData={stats.conflicts}

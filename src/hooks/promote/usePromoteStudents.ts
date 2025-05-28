@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import useGetSelectedKeys from "../config/useGetSelectedKeys";
 import { useGetEvents, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
 
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {

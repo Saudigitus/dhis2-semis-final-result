@@ -3,7 +3,7 @@ import { Form } from "react-final-form";
 import { useSetRecoilState } from "recoil";
 import { TableDataRefetch } from "dhis2-semis-types";
 import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
-import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis-components";
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
 

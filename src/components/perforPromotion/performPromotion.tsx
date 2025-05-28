@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Form } from "react-final-form";
 import { Modules } from 'dhis2-semis-types';
 import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
-import useGetSelectedKeys from "../../config/useGetSelectedKeys";
+import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { staticForm } from "../../constants/searchEnrollmentForm";
 import { useBuildForm, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
