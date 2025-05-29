@@ -1,6 +1,5 @@
 import { Button, ButtonStrip, IconCheckmarkCircle16, Tag } from "@dhis2/ui";
 import { ModalComponent, SummaryCard, Table, WithPadding } from "dhis2-semis-components";
-import { InfoOutlined } from "@material-ui/icons";
 import styles from './showStats.module.css'
 import { Collapse } from "@mui/material";
 import { useState } from "react";
@@ -8,6 +7,7 @@ import { useHeader, useViewPortWidth } from "dhis2-semis-functions";
 import { ProgramConfig, TableDataRefetch } from "dhis2-semis-types";
 import { useSetRecoilState } from "recoil";
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
+import { InfoOutlined } from "@mui/icons-material";
 
 export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: boolean) => void, open: boolean, stats: any }) {
     const [showDetails, setShowDetails] = useState(false)

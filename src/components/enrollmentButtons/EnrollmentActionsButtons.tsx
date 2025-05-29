@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { ButtonStrip, IconUserGroup16 } from "@dhis2/ui";
-import Tooltip from '@material-ui/core/Tooltip';
 import styles from './enrollmentActionsButtons.module.css'
 import { useGetSectionTypeLabel, useUrlParams } from 'dhis2-semis-functions';
 import { Form } from "react-final-form";
@@ -10,6 +9,7 @@ import AsssignFinalResult from '../assingFinalResult/assignFinalResult';
 import PerformPromotion from '../perforPromotion/performPromotion';
 import ShowStats from '../stats/showStats';
 import { useConfig } from '@dhis2/app-runtime';
+import { Tooltip } from '@mui/material';
 
 function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
     const { urlParameters } = useUrlParams();
