@@ -1,23 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Form } from "react-final-form";
-import { Modules } from 'dhis2-semis-types';
 import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
-import { staticForm } from "../../constants/searchEnrollmentForm";
-import { useBuildForm, useUrlParams } from "dhis2-semis-functions";
+import { RulesEngine, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
 import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
 
-export default function PerformPromotion({ selected, setStats, openStats }: { openStats: (args: boolean) => void, setStats: any, selected: any[] }) {
+export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
     const { urlParameters } = useUrlParams()
-    const { schoolName } = urlParameters()
-    const { dataStoreData, program: programData } = useGetSelectedKeys()
-    const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });
-    const [enrollmentDetails = []] = formData;
+    const { schoolName, school } = urlParameters()
+    const { program: programData } = useGetSelectedKeys()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school });
     const { promote } = usePromoteStudents({ selected, setOpen: openStats, setStats, setOpenPerform: setOpen, setLoading })
+
+    const { runRulesEngine, updatedVariables } = RulesEngine({
+        program: programData?.id!,
+        type: "programStage",
+        values: values,
+        variables: formData
+    })
+
+    useEffect(() => {
+        runRulesEngine()
+    }, [values])
+
+
+    const handleChange = (e: { field: any; value: string; name: string }) => {
+        const { name, value } = e;
+        setValues(prev => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const onClick = async (values: any) => await promote(values)
 
@@ -36,6 +53,7 @@ export default function PerformPromotion({ selected, setStats, openStats }: { op
                         <NoticeBox title={`WARNING! ${selected.length} rows will be affected`} warning>
                             No one will be able to access this program. Add some Organisation Units to the access list.
                         </NoticeBox>
+                        <WithPadding/>
                         <WithBorder type="all" >
                             <WithPadding>
                                 <CustomForm
@@ -47,17 +65,15 @@ export default function PerformPromotion({ selected, setStats, openStats }: { op
                                             storyBook: false,
                                             name: "Student promotion",
                                             description: "Student promotion",
-                                            fields: [
-                                                staticForm().registeringSchool,
-                                                ...enrollmentDetails,
-                                                staticForm().enrollmentDate
-                                            ]
+                                            fields: updatedVariables || [],
                                         }
                                     ]}
                                     storyBook={false}
                                     withButtons={true}
                                     onFormSubtmit={(values) => onClick(values)}
                                     onCancel={() => setOpen(false)}
+                                    setFormValues={setValues}
+                                    onInputChange={handleChange}
                                 />
                             </WithPadding>
                         </WithBorder>
