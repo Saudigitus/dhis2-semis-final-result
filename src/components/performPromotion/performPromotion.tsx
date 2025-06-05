@@ -24,7 +24,16 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     })
 
     useEffect(() => {
-        runRulesEngine()
+        setValues({
+            ...values,
+            orgUnit: school
+        });
+    }, [school])
+
+
+    useEffect(() => {
+        console.log(values, "school")
+        runRulesEngine(formData, values)
     }, [values])
 
 
@@ -53,7 +62,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                         <NoticeBox title={`WARNING! ${selected.length} rows will be affected`} warning>
                             No one will be able to access this program. Add some Organisation Units to the access list.
                         </NoticeBox>
-                        <WithPadding/>
+                        <WithPadding />
                         <WithBorder type="all" >
                             <WithPadding>
                                 <CustomForm
