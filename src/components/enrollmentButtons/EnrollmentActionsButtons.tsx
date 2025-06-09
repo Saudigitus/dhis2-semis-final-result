@@ -1,23 +1,44 @@
-import React, { useState } from 'react'
-import { ButtonStrip, IconUserGroup16 } from "@dhis2/ui";
+import React, { useState, useEffect } from 'react'
+import { ButtonStrip, Center, CircularLoader, IconUserGroup16 } from "@dhis2/ui";
 import styles from './enrollmentActionsButtons.module.css'
-import { useGetSectionTypeLabel, useUrlParams } from 'dhis2-semis-functions';
+import { useBuildForm, useGetSectionTypeLabel, useUrlParams } from 'dhis2-semis-functions';
 import { Form } from "react-final-form";
-import { ProgramConfig, selectedDataStoreKey } from 'dhis2-semis-types'
+import { Modules, ProgramConfig, selectedDataStoreKey } from 'dhis2-semis-types'
 import { DataExporter, DataImporter, CustomDropdown as DropdownButton } from 'dhis2-semis-components';
 import AsssignFinalResult from '../assingFinalResult/assignFinalResult';
-import PerformPromotion from '../perforPromotion/performPromotion';
+import PerformPromotion from '../performPromotion/performPromotion';
 import ShowStats from '../stats/showStats';
 import { useConfig } from '@dhis2/app-runtime';
 import { Tooltip } from '@mui/material';
+import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
+import { staticForm } from "../../constants/searchEnrollmentForm";
 
 function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
     const { urlParameters } = useUrlParams();
     const { baseUrl } = useConfig()
     const { school: orgUnit, class: section, grade, academicYear } = urlParameters();
     const { sectionName } = useGetSectionTypeLabel();
+    const { dataStoreData } = useGetSelectedKeys()
+    const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });
+    const [enrollmentDetails = []] = formData
     const [stats, setStats] = useState<{ posted: number, conflicts: any[] }>({ posted: 0, conflicts: [] })
     const [open, setOpen] = useState<boolean>(false)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (formData.length > 0) {
+            setLoading(false);
+        }
+    }, [formData])
+
+
+    if (loading) {
+        return (
+            <Center>
+                <CircularLoader small />
+            </Center>
+        )
+    }
 
     const enrollmentOptions: any = [
         {
@@ -67,7 +88,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                     <AsssignFinalResult selected={selected} />
                 </Tooltip>
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""} >
-                    <PerformPromotion openStats={setOpen} setStats={setStats} selected={selected} />
+                    <PerformPromotion formData={[staticForm().registeringSchool, ...enrollmentDetails, staticForm().enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
                 <DropdownButton
