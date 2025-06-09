@@ -1,6 +1,6 @@
 {
   "name": "dhis2-semis-final-result",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "description": "",
   "license": "BSD-3-Clause",
   "private": false,
@@ -25,6 +25,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@dhis2/app-adapter": "12.6.0",
     "@dhis2/cli-app-scripts": "^12.3.0",
+    "@dhis2/ui": "10.7.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "7.1.0",
@@ -32,7 +33,8 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "copyfiles": "^2.4.1",
-    "dhis2-semis-components": "0.6.5-alpha.15",
+    "dhis2-semis-components": "0.6.5-alpha.28",
+    "dhis2-semis-functions": "0.0.6-alpha.6",
     "dhis2-semis-types": "1.3.14",
     "eslint": "^8.57.1",
     "eslint-config-standard-with-typescript": "^36.1.1",
@@ -61,6 +63,7 @@
     "@mui/icons-material": "7.1.0",
     "@mui/material": "7.1.0",
     "dhis2-semis-components": "*",
+    "dhis2-semis-functions": "*",
     "dhis2-semis-types": "*",
     "recoil": "^0.7.7"
   },
