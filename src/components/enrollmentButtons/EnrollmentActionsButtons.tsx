@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonStrip, Center, CircularLoader, IconUserGroup16 } from "@dhis2/ui";
 import styles from './enrollmentActionsButtons.module.css'
-import { useBuildForm, useGetSectionTypeLabel, useUrlParams } from 'dhis2-semis-functions';
+import { useBuildForm, useGetSectionTypeLabel, useShowAlerts, useUrlParams } from 'dhis2-semis-functions';
 import { Form } from "react-final-form";
 import { Modules, ProgramConfig, selectedDataStoreKey } from 'dhis2-semis-types'
 import { DataExporter, DataImporter, CustomDropdown as DropdownButton } from 'dhis2-semis-components';
@@ -24,6 +24,12 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const [stats, setStats] = useState<{ posted: number, conflicts: any[] }>({ posted: 0, conflicts: [] })
     const [open, setOpen] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
+    const { hide, show } = useShowAlerts()
+
+    const showAlert = (error: any) => {
+        show({ message: `Unknown error: ${error}`, type: { critical: true } })
+        setTimeout(hide, 5000);
+    }
 
     useEffect(() => {
         if (formData.length > 0) {
@@ -46,7 +52,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 baseURL={baseUrl}
                 label={'Bulk Final Result'}
                 module='final-result'
-                onError={(e: any) => { console.log(e) }}
+                onError={(e: any) => { showAlert(e) }}
                 programConfig={programData}
                 sectionType={sectionName}
                 selectedSectionDataStore={selectedDataStoreKey}
@@ -65,10 +71,9 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                     ...(grade ? [`${selectedDataStoreKey.registration.grade}:in:${grade}`] : []),
                     ...(section ? [`${selectedDataStoreKey.registration.section}:in:${section}`] : []),
                 ]}
-                fileName='teste'
                 label='Export Final Result'
                 module='final-result'
-                onError={(e: any) => console.log(e)}
+                onError={(e: any) => { showAlert(e) }}
                 programConfig={programData}
                 sectionType={sectionName}
                 selectedSectionDataStore={selectedDataStoreKey}
@@ -87,16 +92,22 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""}>
                     <AsssignFinalResult selected={selected} />
                 </Tooltip>
+
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""} >
                     <PerformPromotion formData={[staticForm().registeringSchool, ...enrollmentDetails, staticForm().enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
-                <DropdownButton
-                    name={<span className={styles.work_buttons_text}>Bulk Final Result</span> as unknown as string}
-                    disabled={!!(orgUnit == undefined || section == undefined || grade == undefined || academicYear == undefined)}
-                    icon={<IconUserGroup16 />}
-                    options={enrollmentOptions}
-                />
+                <Tooltip title={(section === null || grade === null || academicYear == undefined) ? "Please select section and grade" : ""} >
+                    <span>
+                        <DropdownButton
+                            name={<span className={styles.work_buttons_text}>Bulk Final Result</span> as unknown as string}
+                            disabled={!!(orgUnit == undefined || section == undefined || grade == undefined || academicYear == undefined)}
+                            icon={<IconUserGroup16 />}
+                            options={enrollmentOptions}
+                        />
+                    </span>
+                </Tooltip>
+
             </ButtonStrip>
         </div>
     )
