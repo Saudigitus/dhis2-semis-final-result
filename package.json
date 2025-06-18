@@ -1,6 +1,6 @@
 {
   "name": "dhis2-semis-final-result",
-  "version": "1.0.0-alpha.14",
+  "version": "1.0.0-alpha.19",
   "description": "",
   "license": "BSD-3-Clause",
   "private": false,
@@ -18,7 +18,7 @@
     "start": "d2-app-scripts start --proxy https://emis.dhis2.org/startracker",
     "test": "d2-app-scripts test",
     "deploy": "d2-app-scripts deploy",
-    "copy-files": "copyfiles -u 1 src/**/*.png src/**/*.svg src/**/*.css dist/",
+    "copy-files": "copyfiles -u 1 \"src/**/*.png\" \"src/**/*.svg\" \"src/**/*.css\" dist/",
     "lib": "rimraf ./dist && npx tsc -b && yarn copy-files"
   },
   "devDependencies": {
