@@ -15,7 +15,7 @@ export default function FinalResult() {
   const [selected, setSelected] = useState([])
   const { dataStoreData, program: programData } = useGetSelectedKeys()
   const [updatedData, updateData] = useState([])
-  const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0, totalElements: 0 })
+  const [pagination, setPagination] = useState({ page: 1, pageSize: 50, totalPages: 0, totalElements: 0 })
   const { academicYear, grade, class: section, schoolName, school, sectionType } = urlParameters();
   const { getData, tableData, loading } = useTableData({ module: Modules.Final_Result });
   const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: dataStoreData?.['final-result']?.programStage as unknown as string });
@@ -37,7 +37,8 @@ export default function FinalResult() {
         ...(grade ? [`${dataStoreData.registration.grade}:in:${grade}`] : []),
         ...(section ? [`${dataStoreData.registration.section}:in:${section}`] : []),
       ],
-      otherProgramStage: dataStoreData?.['final-result']?.programStage
+      otherProgramStage: dataStoreData?.['final-result']?.programStage,
+      order: dataStoreData.defaults.defaultOrder
     })
   }, [sectionType, filetrState, refetch, pagination.page, pagination.pageSize, academicYear, grade, section, school])
 
