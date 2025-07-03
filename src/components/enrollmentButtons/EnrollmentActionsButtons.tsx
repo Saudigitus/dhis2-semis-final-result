@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonStrip, Center, CircularLoader, IconUserGroup16 } from "@dhis2/ui";
 import styles from './enrollmentActionsButtons.module.css'
-import { useBuildForm, useGetSectionTypeLabel, useShowAlerts, useUrlParams } from 'dhis2-semis-functions';
+import { useBuildForm, useCheckFilters, useGetSectionTypeLabel, useShowAlerts, useUrlParams } from 'dhis2-semis-functions';
 import { Form } from "react-final-form";
 import { Modules, ProgramConfig, selectedDataStoreKey } from 'dhis2-semis-types'
 import { DataExporter, DataImporter, CustomDropdown as DropdownButton } from 'dhis2-semis-components';
@@ -25,6 +25,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const [open, setOpen] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
     const { hide, show } = useShowAlerts()
+    const { areAllSelected } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
 
     const showAlert = (error: any) => {
         show({ message: `Unknown error: ${error}`, type: { critical: true } })
@@ -36,7 +37,6 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
             setLoading(false);
         }
     }, [formData])
-
 
     if (loading) {
         return (
@@ -101,7 +101,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                     <span>
                         <DropdownButton
                             name={<span className={styles.work_buttons_text}>Bulk Final Result</span> as unknown as string}
-                            disabled={!!(orgUnit == undefined || section == undefined || grade == undefined || academicYear == undefined)}
+                            disabled={!!(orgUnit == undefined || !areAllSelected() || academicYear == undefined)}
                             icon={<IconUserGroup16 />}
                             options={enrollmentOptions}
                         />
