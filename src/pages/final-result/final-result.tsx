@@ -25,20 +25,21 @@ export default function FinalResult() {
 
   useEffect(() => {
     setSelected([])
-    void getData({
-      page: pagination.page,
-      pageSize: pagination.pageSize,
-      program: programData?.id as string,
-      orgUnit: school!,
-      baseProgramStage: dataStoreData?.registration?.programStage as string,
-      attributeFilters: filetrState.attributes,
-      dataElementFilters: [
-        ...(academicYear ? [`${dataStoreData.registration.academicYear}:in:${academicYear}`] : []),
-        ...(grade ? [`${dataStoreData.registration.grade}:in:${grade}`] : []),
-        ...(section ? [`${dataStoreData.registration.section}:in:${section}`] : []),
-      ],
-      otherProgramStage: dataStoreData?.['final-result']?.programStage
-    })
+    if (school && academicYear)
+      void getData({
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        program: programData?.id as string,
+        orgUnit: school!,
+        baseProgramStage: dataStoreData?.registration?.programStage as string,
+        attributeFilters: filetrState.attributes,
+        dataElementFilters: [
+          ...(academicYear ? [`${dataStoreData.registration.academicYear}:in:${academicYear}`] : []),
+          ...(grade ? [`${dataStoreData.registration.grade}:in:${grade}`] : []),
+          ...(section ? [`${dataStoreData.registration.section}:in:${section}`] : []),
+        ],
+        otherProgramStage: dataStoreData?.['final-result']?.programStage
+      })
   }, [sectionType, filetrState, refetch, pagination.page, pagination.pageSize, academicYear, grade, section, school])
 
   useEffect(() => {
