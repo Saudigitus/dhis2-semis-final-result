@@ -6,15 +6,25 @@ import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { RulesEngine, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
 import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
+import { Tooltip } from "@mui/material";
 
 export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
     const { urlParameters } = useUrlParams()
     const { schoolName, school } = urlParameters()
-    const { program: programData } = useGetSelectedKeys()
+    const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school });
     const { promote } = usePromoteStudents({ selected, setOpen: openStats, setStats, setOpenPerform: setOpen, setLoading })
+
+    const promotableStudents = selected.filter(estudante => {
+        const dvs = estudante.frEvent?.dataValues ?? [];
+        return dvs.length === 0 || dvs.some((dv: any) =>
+            dv.dataElement === dataStoreData["final-result"]?.status &&
+            dv.value?.toLowerCase() !== "promoted"
+        );
+    });
+
 
     const { runRulesEngine, updatedVariables } = RulesEngine({
         program: programData?.id!,
@@ -33,7 +43,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
     useEffect(() => {
         console.log(values, "school")
-        runRulesEngine(formData, values)
+        runRulesEngine()
     }, [values])
 
 
@@ -49,13 +59,16 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
     return (
         <>
-            <Button disabled={selected?.length == 0} onClick={() => {
-                setOpen(true);
-            }} icon={<IconAddCircle24 />}
+            <Tooltip
+                title={promotableStudents?.length > 0 ? "Some selected students have no final result or were not promoted." : ""}
             >
-                <span>Perform promotion</span>
-            </Button >
-
+                <Button disabled={promotableStudents?.length > 0 || selected.length == 0} onClick={() => {
+                    setOpen(true);
+                }} icon={<IconAddCircle24 />}
+                >
+                    <span>Perform promotion</span>
+                </Button >
+            </Tooltip>
             {
                 open && <ModalComponent
                     children={<WithPadding>
