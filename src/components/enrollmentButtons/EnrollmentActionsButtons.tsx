@@ -4,7 +4,7 @@ import styles from './enrollmentActionsButtons.module.css'
 import { useBuildForm, useCheckFilters, useGetSectionTypeLabel, useShowAlerts, useUrlParams } from 'dhis2-semis-functions';
 import { Form } from "react-final-form";
 import { Modules, ProgramConfig, selectedDataStoreKey } from 'dhis2-semis-types'
-import { DataExporter, DataImporter, CustomDropdown as DropdownButton } from 'dhis2-semis-components';
+import { DataExporter, DataImporter, CustomDropdown as DropdownButton, useSchoolCalendar } from 'dhis2-semis-components';
 import AsssignFinalResult from '../assingFinalResult/assignFinalResult';
 import PerformPromotion from '../performPromotion/performPromotion';
 import ShowStats from '../stats/showStats';
@@ -26,6 +26,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const [loading, setLoading] = useState(true)
     const { hide, show } = useShowAlerts()
     const { areAllSelected } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
+    const { academicYear: academicYearId } = useSchoolCalendar()
 
     const showAlert = (error: any) => {
         show({ message: `Unknown error: ${error}`, type: { critical: true } })
@@ -67,7 +68,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 Form={Form}
                 baseURL={baseUrl}
                 eventFilters={[
-                    ...(academicYear ? [`${selectedDataStoreKey.registration.academicYear}:in:${academicYear}`] : []),
+                    ...(academicYear ? [`${academicYearId}:in:${academicYear}`] : []),
                     ...(grade ? [`${selectedDataStoreKey.registration.grade}:in:${grade}`] : []),
                     ...(section ? [`${selectedDataStoreKey.registration.section}:in:${section}`] : []),
                 ]}
