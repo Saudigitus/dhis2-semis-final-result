@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import useGetSelectedKeys from "../config/useGetSelectedKeys";
 import { useGetEvents, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
+import { useSchoolCalendarKey } from "dhis2-semis-components";
 
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {
     const { getEvents } = useGetEvents()
@@ -8,6 +9,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
     const { school: orgUnit } = urlParameters();
     const { uploadValues } = useUploadEvents()
     const { dataStoreData, program: programData } = useGetSelectedKeys()
+    const schoolCalendar = useSchoolCalendarKey()
 
     async function promote(values: any) {
         setLoading(true)
@@ -30,7 +32,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
         }
 
         for (const tei of selected) {
-            const checkAlreadyPromoted = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${dataStoreData.registration.academicYear}:in:${values?.[dataStoreData.registration.academicYear]}`] })
+            const checkAlreadyPromoted = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${schoolCalendar?.academicYear}:in:${values?.[schoolCalendar?.academicYear]}`] })
 
             if (checkAlreadyPromoted?.length === 0) {
                 let events = []
