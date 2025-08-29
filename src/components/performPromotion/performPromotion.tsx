@@ -42,7 +42,6 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
 
     useEffect(() => {
-        console.log(values, "school")
         runRulesEngine()
     }, [values])
 
