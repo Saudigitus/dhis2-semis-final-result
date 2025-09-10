@@ -14,18 +14,25 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
     async function promote(values: any) {
         setLoading(true)
         let registration: any = []
-        const scPstage = dataStoreData["socio-economics"].programStage
+        const scPstage = dataStoreData["socio-economics"]?.programStage
         let enrollments: any[] = []
         let date = format(new Date(), 'yyyy-MM-dd')
 
-        Object.keys(dataStoreData.registration).forEach((ds: any) => {
-            if (values?.[(dataStoreData?.registration as unknown as any)?.[ds]]) {
-                registration.push({
-                    dataElement: (dataStoreData?.registration as unknown as any)?.[ds],
-                    value: values?.[(dataStoreData?.registration as unknown as any)?.[ds]]
-                })
-            }
-        })
+        for (const chave in values) {
+            registration.push({
+                dataElement: chave,
+                value: values[chave]
+            })
+        }
+
+        // Object.keys(dataStoreData.registration).forEach((ds: any) => {
+        //     if (values?.[(dataStoreData?.registration as unknown as any)?.[ds]]) {
+        //         registration.push({
+        //             dataElement: (dataStoreData?.registration as unknown as any)?.[ds],
+        //             value: values?.[(dataStoreData?.registration as unknown as any)?.[ds]]
+        //         })
+        //     }
+        // })
 
         const getEventStructure = (stage: string, datavalues: any[]) => {
             return { occurredAt: date, notes: [], status: "ACTIVE", program: programData?.id, programStage: stage, orgUnit, scheduledAt: date, dataValues: datavalues }
