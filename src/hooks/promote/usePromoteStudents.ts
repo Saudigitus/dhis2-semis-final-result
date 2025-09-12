@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import useGetSelectedKeys from "../config/useGetSelectedKeys";
 import { useGetEvents, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
+import { useSchoolCalendarKey } from "dhis2-semis-components";
 
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {
     const { getEvents } = useGetEvents()
@@ -8,29 +9,37 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
     const { school: orgUnit } = urlParameters();
     const { uploadValues } = useUploadEvents()
     const { dataStoreData, program: programData } = useGetSelectedKeys()
+    const schoolCalendar = useSchoolCalendarKey()
 
     async function promote(values: any) {
         setLoading(true)
         let registration: any = []
-        const scPstage = dataStoreData["socio-economics"].programStage
+        const scPstage = dataStoreData["socio-economics"]?.programStage
         let enrollments: any[] = []
         let date = format(new Date(), 'yyyy-MM-dd')
 
-        Object.keys(dataStoreData.registration).forEach((ds: any) => {
-            if (values?.[(dataStoreData?.registration as unknown as any)?.[ds]]) {
-                registration.push({
-                    dataElement: (dataStoreData?.registration as unknown as any)?.[ds],
-                    value: values?.[(dataStoreData?.registration as unknown as any)?.[ds]]
-                })
-            }
-        })
+        for (const chave in values) {
+            registration.push({
+                dataElement: chave,
+                value: values[chave]
+            })
+        }
+
+        // Object.keys(dataStoreData.registration).forEach((ds: any) => {
+        //     if (values?.[(dataStoreData?.registration as unknown as any)?.[ds]]) {
+        //         registration.push({
+        //             dataElement: (dataStoreData?.registration as unknown as any)?.[ds],
+        //             value: values?.[(dataStoreData?.registration as unknown as any)?.[ds]]
+        //         })
+        //     }
+        // })
 
         const getEventStructure = (stage: string, datavalues: any[]) => {
             return { occurredAt: date, notes: [], status: "ACTIVE", program: programData?.id, programStage: stage, orgUnit, scheduledAt: date, dataValues: datavalues }
         }
 
         for (const tei of selected) {
-            const checkAlreadyPromoted = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${dataStoreData.registration.academicYear}:in:${values?.[dataStoreData.registration.academicYear]}`] })
+            const checkAlreadyPromoted = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${schoolCalendar?.academicYear}:in:${values?.[schoolCalendar?.academicYear]}`] })
 
             if (checkAlreadyPromoted?.length === 0) {
                 let events = []
