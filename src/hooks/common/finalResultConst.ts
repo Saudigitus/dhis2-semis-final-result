@@ -14,7 +14,7 @@ export const useFinalResultConst = ({ updateData, data }: { data: any[], updateD
                     ?.find(x => x.id === stage)?.programStageDataElements
                     ?.find(x => x.dataElement.id === status)
                     ?.dataElement.optionSet.options
-                    ?.find(x => x.value === copy[index]?.frEvent?.dataValues?.filter((dataValue: any) => dataValue?.dataElement == status)?.[0]?.value)?.label
+                    ?.find(x => x.value === copy[index][status!])?.label
 
 
                 copy[index][status!] = option ? statusComponent({ status: option! }) : undefined
