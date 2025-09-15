@@ -31,26 +31,26 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 trackedEntity: tei?.trackedEntity,
                 programStage: finalResult?.programStage
             })
-            const enrollmentEvent = frEvents.find((x: any) => x.enrollment === tei?.enrollmentId)
+            const selectedEnrollmentFrEvent = frEvents.find((x: any) => x.enrollment === tei?.enrollmentId)
 
-            if (enrollmentEvent) {
+            if (selectedEnrollmentFrEvent) {
                 teis.push({
                     orgUnit: school,
                     trackedEntityType: trackedEntityType,
-                    trackedEntity: enrollmentEvent?.trackedEntity,
+                    trackedEntity: selectedEnrollmentFrEvent?.trackedEntity,
                     enrollments: [
                         {
                             trackedEntity: tei?.trackedEntity,
                             enrollment: tei?.enrollmentId,
                             status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
-                            orgUnit: enrollmentEvent?.orgUnit,
-                            program: enrollmentEvent?.program,
-                            enrolledAt: enrollmentEvent?.occurredAt,
-                            occurredAt: enrollmentEvent?.occurredAt,
+                            orgUnit: selectedEnrollmentFrEvent?.orgUnit,
+                            program: selectedEnrollmentFrEvent?.program,
+                            enrolledAt: selectedEnrollmentFrEvent?.occurredAt,
+                            occurredAt: selectedEnrollmentFrEvent?.occurredAt,
                             trackedEntityType: trackedEntityType,
                             events: [
                                 {
-                                    ...enrollmentEvent,
+                                    ...selectedEnrollmentFrEvent,
                                     dataValues: [
                                         {
                                             dataElement: frStatus,
