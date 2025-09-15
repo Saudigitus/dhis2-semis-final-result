@@ -55,8 +55,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                 events.push(returnEventStructure(dataStoreData.registration.programStage, registrationEvent))
 
                 programStagesToUse.forEach(programStage => {
-                    if (programStage !== socioEconomicPStage && programStage !== dataStoreData["final-result"]?.programStage)
-                        events.push(returnEventStructure(programStage, []))
+                    events.push(returnEventStructure(programStage, []))
                 })
 
                 enrollments.push(
