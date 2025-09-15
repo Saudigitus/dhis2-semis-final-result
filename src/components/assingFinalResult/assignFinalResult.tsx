@@ -6,13 +6,14 @@ import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis-components";
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
+import { format } from "date-fns";
 
 export default function AsssignFinalResult({ selected }: { selected: any[] }) {
     const { dataStoreData } = useGetSelectedKeys()
     const { "final-result": finalResult, trackedEntityType } = dataStoreData
     const { dataElements } = useGetDataElements({ programStageId: finalResult?.programStage as unknown as string, type: "programStage" })
     const { urlParameters } = useUrlParams()
-    const { school } = urlParameters()
+    const { school } = urlParameters
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { uploadValues } = useUploadEvents()
@@ -26,39 +27,77 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
 
         for (const tei of selected) {
             const frEvents = await getEvents({
-                program: tei.programId, fields: "*",
-                trackedEntity: tei.trackedEntity,
+                program: tei?.programId, fields: "*",
+                trackedEntity: tei?.trackedEntity,
                 programStage: finalResult?.programStage
             })
-            const enrollmentEvent = frEvents.find((x: any) => x.enrollment === tei.enrollmentId)
+            const enrollmentEvent = frEvents.find((x: any) => x.enrollment === tei?.enrollmentId)
 
-            teis.push({
-                orgUnit: school,
-                trackedEntityType: trackedEntityType,
-                trackedEntity: enrollmentEvent?.trackedEntity,
-                enrollments: [
-                    {
-                        enrollment: tei.enrollmentId,
-                        status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
-                        orgUnit: enrollmentEvent?.orgUnit,
-                        program: enrollmentEvent?.program,
-                        enrolledAt: enrollmentEvent?.occurredAt,
-                        occurredAt: enrollmentEvent?.occurredAt,
-                        trackedEntityType: trackedEntityType,
-                        events: [
-                            {
-                                ...enrollmentEvent,
-                                dataValues: [
-                                    {
-                                        dataElement: frStatus,
-                                        value: values[frStatus]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            })
+            if (enrollmentEvent) {
+                teis.push({
+                    orgUnit: school,
+                    trackedEntityType: trackedEntityType,
+                    trackedEntity: enrollmentEvent?.trackedEntity,
+                    enrollments: [
+                        {
+                            trackedEntity: tei?.trackedEntity,
+                            enrollment: tei?.enrollmentId,
+                            status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
+                            orgUnit: enrollmentEvent?.orgUnit,
+                            program: enrollmentEvent?.program,
+                            enrolledAt: enrollmentEvent?.occurredAt,
+                            occurredAt: enrollmentEvent?.occurredAt,
+                            trackedEntityType: trackedEntityType,
+                            events: [
+                                {
+                                    ...enrollmentEvent,
+                                    dataValues: [
+                                        {
+                                            dataElement: frStatus,
+                                            value: values[frStatus]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                })
+            }
+            else {
+                teis.push({
+                    orgUnit: school,
+                    trackedEntity: tei?.trackedEntity,
+                    trackedEntityType: trackedEntityType,
+                    enrollments: [
+                        {
+                            orgUnit: school,
+                            program: tei?.programId,
+                            trackedEntity: tei?.trackedEntity,
+                            enrollment: tei?.enrollmentId,
+                            trackedEntityType: trackedEntityType,
+                            enrolledAt: format(new Date(), "yyyy-MM-dd"),
+                            occurredAt: format(new Date(), "yyyy-MM-dd"),
+                            status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
+                            events: [
+                                {
+                                    orgUnit: school,
+                                    status: "COMPLETED",
+                                    program: tei?.programId,
+                                    programStage: finalResult?.programStage,
+                                    occurredAt: format(new Date(), "yyyy-MM-dd"),
+                                    scheduledAt: format(new Date(), "yyyy-MM-dd"),
+                                    dataValues: [
+                                        {
+                                            dataElement: frStatus,
+                                            value: values[frStatus]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                })
+            }
         }
 
         await uploadValues({ trackedEntities: teis }, 'COMMIT', 'CREATE_AND_UPDATE')
