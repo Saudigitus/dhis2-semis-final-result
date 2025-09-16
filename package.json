@@ -1,6 +1,6 @@
 {
   "name": "dhis2-semis-final-result",
-  "version": "1.0.0-alpha.34",
+  "version": "1.0.0-alpha.36",
   "description": "",
   "license": "BSD-3-Clause",
   "private": false,
@@ -33,8 +33,8 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "copyfiles": "^2.4.1",
-    "dhis2-semis-components": "0.6.7-alpha.91",
-    "dhis2-semis-functions": "^0.0.7-alpha.28",
+    "dhis2-semis-components": "0.6.7-alpha.61",
+    "dhis2-semis-functions": "^0.0.7-alpha.29",
     "dhis2-semis-types": "1.3.14",
     "eslint": "^8.57.1",
     "eslint-config-standard-with-typescript": "^36.1.1",
