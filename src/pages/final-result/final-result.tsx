@@ -7,7 +7,7 @@ import { TableDataRefetch, Modules } from "dhis2-semis-types"
 import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 import { useFinalResultConst } from '../../hooks/common/finalResultConst';
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
-import { useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
+import { useCheckFilters, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 
 export default function FinalResult() {
   const { viewPortWidth } = useViewPortWidth();
@@ -23,6 +23,7 @@ export default function FinalResult() {
   const refetch = useRecoilValue(TableDataRefetch);
   const { finalResultConst } = useFinalResultConst({ updateData, data: tableData.data })
   const schoolCalendar = useSchoolCalendarKey()
+  const { getFilters } = useCheckFilters({ filters: (dataStoreData?.filters?.dataElements ?? []) as unknown as any })
 
   useEffect(() => {
     setSelected([])
@@ -36,8 +37,7 @@ export default function FinalResult() {
         attributeFilters: filetrState.attributes,
         dataElementFilters: [
           ...(academicYear ? [`${schoolCalendar?.academicYear}:in:${academicYear}`] : []),
-          ...(grade ? [`${dataStoreData.registration.grade}:in:${grade}`] : []),
-          ...(section ? [`${dataStoreData.registration.section}:in:${section}`] : []),
+          ...getFilters() as unknown as any
         ],
         otherProgramStage: dataStoreData?.['final-result']?.programStage,
         order: dataStoreData.defaults.defaultOrder
@@ -76,7 +76,13 @@ export default function FinalResult() {
               inactiveRowMessage='Dropout'
               filterState={filetrState}
               loading={loading}
-              rightElements={<EnrollmentActionsButtons selected={selected} selectedDataStoreKey={dataStoreData} programData={programData as unknown as ProgramConfig} />}
+              rightElements={
+                <EnrollmentActionsButtons
+                  selected={selected}
+                  selectedDataStoreKey={dataStoreData}
+                  programData={programData as unknown as ProgramConfig}
+                />
+              }
               setFilterState={setFilterState}
               selectable={true}
               selected={selected}

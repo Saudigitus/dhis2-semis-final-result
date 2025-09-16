@@ -25,7 +25,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const [open, setOpen] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
     const { hide, show } = useShowAlerts()
-    const { areAllSelected } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
+    const { areAllSelected, getFilters } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
     const schoolCalendar = useSchoolCalendarKey()
 
     const showAlert = (error: any) => {
@@ -69,8 +69,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 baseURL={baseUrl}
                 eventFilters={[
                     ...(academicYear ? [`${schoolCalendar?.academicYear}:in:${academicYear}`] : []),
-                    ...(grade ? [`${selectedDataStoreKey.registration.grade}:in:${grade}`] : []),
-                    ...(section ? [`${selectedDataStoreKey.registration.section}:in:${section}`] : []),
+                    ...getFilters() as unknown as any
                 ]}
                 label='Export Final Result'
                 module='final-result'
