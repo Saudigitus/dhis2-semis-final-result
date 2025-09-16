@@ -1,40 +1,33 @@
 import { format } from "date-fns";
 import useGetSelectedKeys from "../config/useGetSelectedKeys";
 import { useGetEvents, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
-import { useSchoolCalendarKey } from "dhis2-semis-components";
+import { useGetUsedProgramStages, useSchoolCalendarKey } from "dhis2-semis-components";
 
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {
     const { getEvents } = useGetEvents()
     const { urlParameters } = useUrlParams();
-    const { school: orgUnit } = urlParameters();
+    const { school: orgUnit, sectionType } = urlParameters;
     const { uploadValues } = useUploadEvents()
-    const { dataStoreData, program: programData } = useGetSelectedKeys()
     const schoolCalendar = useSchoolCalendarKey()
+    const { dataStoreData, program: programData } = useGetSelectedKeys()
+    const programStagesToUse = useGetUsedProgramStages({ sectionType: sectionType as any })
 
     async function promote(values: any) {
         setLoading(true)
-        let registration: any = []
-        const scPstage = dataStoreData["socio-economics"]?.programStage
         let enrollments: any[] = []
+        let registrationEvent: any = []
         let date = format(new Date(), 'yyyy-MM-dd')
+        const socioEconomicPStage = dataStoreData["socio-economics"]?.programStage
 
-        for (const chave in values) {
-            registration.push({
-                dataElement: chave,
-                value: values[chave]
+        const { registeringSchool, enrollment_date, ...registrationValues } = values
+        for (const key in registrationValues) {
+            registrationEvent.push({
+                dataElement: key,
+                value: registrationValues[key]
             })
         }
 
-        // Object.keys(dataStoreData.registration).forEach((ds: any) => {
-        //     if (values?.[(dataStoreData?.registration as unknown as any)?.[ds]]) {
-        //         registration.push({
-        //             dataElement: (dataStoreData?.registration as unknown as any)?.[ds],
-        //             value: values?.[(dataStoreData?.registration as unknown as any)?.[ds]]
-        //         })
-        //     }
-        // })
-
-        const getEventStructure = (stage: string, datavalues: any[]) => {
+        const returnEventStructure = (stage: string, datavalues: any[]) => {
             return { occurredAt: date, notes: [], status: "ACTIVE", program: programData?.id, programStage: stage, orgUnit, scheduledAt: date, dataValues: datavalues }
         }
 
@@ -45,8 +38,8 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                 let events = []
                 let socioEconomicDataValues: any = []
 
-                const scData = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: scPstage })
-                const event = scData?.find((x: any) => x.enrollment === tei.enrollmentId)
+                const socioEconomicEvent = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: socioEconomicPStage })
+                const event = socioEconomicEvent?.find((x: any) => x.enrollment === tei.enrollmentId)
 
                 if (event) {
                     event?.dataValues.forEach((dataValue: any) => {
@@ -56,14 +49,13 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                         })
                     })
 
-                    events.push(getEventStructure(scPstage, socioEconomicDataValues))
+                    events.push(returnEventStructure(socioEconomicPStage, socioEconomicDataValues))
                 }
 
-                events.push(getEventStructure(dataStoreData.registration.programStage, registration))
-                events.push(getEventStructure(dataStoreData["final-result"]?.programStage as unknown as string, []))
+                events.push(returnEventStructure(dataStoreData.registration.programStage, registrationEvent))
 
-                dataStoreData.performance?.programStages.forEach(performanceProgramStage => {
-                    events.push(getEventStructure(performanceProgramStage.programStage, []))
+                programStagesToUse.forEach(programStage => {
+                    events.push(returnEventStructure(programStage, []))
                 })
 
                 enrollments.push(
@@ -85,7 +77,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
             } else setStats((prev: any) => ({ ...prev, conflicts: [...prev.conflicts, tei] }))
         }
 
-        if (enrollments.length > 0) await uploadValues({ trackedEntities: enrollments }, 'COMMIT', 'CREATE_AND_UPDATE')
+        if (enrollments.length) await uploadValues({ trackedEntities: enrollments }, 'COMMIT', 'CREATE_AND_UPDATE')
 
         setStats((prev: any) => ({ ...prev, posted: enrollments.length }))
         setOpenPerform(false)

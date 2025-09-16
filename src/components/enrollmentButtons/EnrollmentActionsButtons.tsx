@@ -16,7 +16,7 @@ import { staticForm } from "../../constants/searchEnrollmentForm";
 function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
     const { urlParameters } = useUrlParams();
     const { baseUrl } = useConfig()
-    const { school: orgUnit, class: section, grade, academicYear } = urlParameters();
+    const { school: orgUnit, class: section, grade, academicYear } = urlParameters;
     const { sectionName } = useGetSectionTypeLabel();
     const { dataStoreData } = useGetSelectedKeys()
     const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });

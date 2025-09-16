@@ -10,7 +10,7 @@ import { Tooltip } from "@mui/material";
 
 export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
     const { urlParameters } = useUrlParams()
-    const { schoolName, school } = urlParameters()
+    const { schoolName, school } = urlParameters
     const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
