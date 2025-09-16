@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { Table, useSchoolCalendar } from "dhis2-semis-components";
+import { Table, useSchoolCalendarKey } from "dhis2-semis-components";
 import { InfoPage } from 'dhis2-semis-components'
 import { ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export default function FinalResult() {
   const [filetrState, setFilterState] = useState<{ dataElements: any[], attributes: any[] }>({ attributes: [], dataElements: [] });
   const refetch = useRecoilValue(TableDataRefetch);
   const { finalResultConst } = useFinalResultConst({ updateData, data: tableData.data })
-  const { academicYear: academicYearId } = useSchoolCalendar()
+  const schoolCalendar = useSchoolCalendarKey()
 
   useEffect(() => {
     setSelected([])
@@ -35,7 +35,7 @@ export default function FinalResult() {
         baseProgramStage: dataStoreData?.registration?.programStage as string,
         attributeFilters: filetrState.attributes,
         dataElementFilters: [
-          ...(academicYear ? [`${academicYearId}:in:${academicYear}`] : []),
+          ...(academicYear ? [`${schoolCalendar?.academicYear}:in:${academicYear}`] : []),
           ...(grade ? [`${dataStoreData.registration.grade}:in:${grade}`] : []),
           ...(section ? [`${dataStoreData.registration.section}:in:${section}`] : []),
         ],

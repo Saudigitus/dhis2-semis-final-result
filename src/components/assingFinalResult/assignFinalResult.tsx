@@ -38,7 +38,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 trackedEntity: enrollmentEvent?.trackedEntity,
                 enrollments: [
                     {
-                        enrollment: enrollmentEvent?.enrollment,
+                        enrollment: tei.enrollmentId,
                         status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
                         orgUnit: enrollmentEvent?.orgUnit,
                         program: enrollmentEvent?.program,
@@ -60,8 +60,9 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 ]
             })
         }
+
         await uploadValues({ trackedEntities: teis }, 'COMMIT', 'CREATE_AND_UPDATE')
-            .then(() => { setLoading(false); setRefetch(prev => (!prev)); setOpen(false) })
+            .then(() => { setLoading(false); setRefetch((prev: any) => (!prev)); setOpen(false) })
             .catch(() => { setLoading(false); setOpen(false) })
     }
 
@@ -72,7 +73,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 setOpen(true);
             }} icon={<IconAddCircle24 />}
             >
-                <span>Assing final result</span>
+                <span>Assign final result</span>
             </Button >
 
             {
@@ -96,7 +97,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                                     ]}
                                     storyBook={false}
                                     withButtons={true}
-                                    onFormSubtmit={(e) => formSubmit(e)}
+                                    onFormSubtmit={(e: any) => formSubmit(e)}
                                     onCancel={() => setOpen(false)}
                                 />
                             </WithPadding>
