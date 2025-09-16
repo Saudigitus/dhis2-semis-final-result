@@ -38,7 +38,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 trackedEntity: enrollmentEvent?.trackedEntity,
                 enrollments: [
                     {
-                        enrollment: enrollmentEvent?.enrollment,
+                        enrollment: tei.enrollmentId,
                         status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
                         orgUnit: enrollmentEvent?.orgUnit,
                         program: enrollmentEvent?.program,
@@ -73,7 +73,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 setOpen(true);
             }} icon={<IconAddCircle24 />}
             >
-                <span>Assing final result</span>
+                <span>Assign final result</span>
             </Button >
 
             {
