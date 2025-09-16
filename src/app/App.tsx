@@ -9,15 +9,15 @@ const MyApp = () => {
     const { baseUrl } = useConfig()
 
     return (
-        <AppWrapper
-        baseUrl={baseUrl}
-        dataStoreKey="dataStore/semis/values"
-        schoolCalendarKey='dataStore/semis/schoolCalendar'
-    >
-        <HashRouter>
-            <Router />
-        </HashRouter >
-    </AppWrapper>
+        // <AppWrapper
+        //     baseUrl={baseUrl}
+        //     dataStoreKey="dataStore/semis/values"
+        //     schoolCalendarKey='dataStore/semis/schoolCalendar'
+        // >
+        //     <HashRouter>
+                <Router />
+        //     </HashRouter >
+        // </AppWrapper>
     )
 }
 
