@@ -15,11 +15,12 @@ import { staticForm } from "../../constants/searchEnrollmentForm";
 
 function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
     const { urlParameters } = useUrlParams();
+    const schoolCalendar = useSchoolCalendarKey()
     const { baseUrl } = useConfig()
     const { school: orgUnit, class: section, grade, academicYear } = urlParameters;
     const { sectionName } = useGetSectionTypeLabel();
     const { dataStoreData } = useGetSelectedKeys()
-    const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });
+    const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment, schoolCalendar: schoolCalendar });
     const [enrollmentDetails = []] = formData
     const [stats, setStats] = useState<{ posted: number, conflicts: any[] }>({ posted: 0, conflicts: [] })
     const [open, setOpen] = useState<boolean>(false)

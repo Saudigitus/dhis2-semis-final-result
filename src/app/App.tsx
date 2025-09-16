@@ -9,7 +9,7 @@ const MyApp = () => {
     const { baseUrl } = useConfig()
 
     return (
-        //     <AppWrapper
+        // <AppWrapper
         //     baseUrl={baseUrl}
         //     dataStoreKey="dataStore/semis/values"
         //     schoolCalendarKey='dataStore/semis/schoolCalendar'
