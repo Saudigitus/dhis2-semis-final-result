@@ -27,7 +27,6 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const [loading, setLoading] = useState(true)
     const { hide, show } = useShowAlerts()
     const { areAllSelected, getFilters } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
-    const schoolCalendar = useSchoolCalendarKey()
 
     const showAlert = (error: any) => {
         show({ message: `Unknown error: ${error}`, type: { critical: true } })
