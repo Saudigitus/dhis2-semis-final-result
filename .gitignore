@@ -6,6 +6,7 @@ build
 .codegpt
 .yalc
 package-lock.json
+.claude
 yarn.lock
 dist
 tsconfig.tsbuildinfo
