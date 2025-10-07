@@ -25,6 +25,30 @@ export default function FinalResult() {
   const schoolCalendar = useSchoolCalendarKey()
   const { getFilters } = useCheckFilters({ filters: (dataStoreData?.filters?.dataElements ?? []) as unknown as any })
 
+  const getInfoPageContent = () => {
+    if (sectionType === 'staff') {
+      return {
+        title: "SEMIS-Staff-Re-enrollment",
+        sectionTitle: "Follow the instructions to proceed:",
+        instructions: [
+          "Select the Organization unit you want to view data",
+          "Use global filters(Type of Staff, Employment Type and Academic Year)"
+        ]
+      }
+    }
+    return {
+      title: "SEMIS-Final-Result",
+      sectionTitle: "Follow the instructions to proceed:",
+      instructions: [
+        "Select the Organization unit you want to view data",
+        "Use global filters(Class, Grade and Academic Year)"
+      ]
+    }
+  }
+
+  const infoPageContent = getInfoPageContent()
+  const tableTitle = sectionType === 'staff' ? 'Staff Re-enrollment' : 'Final Results'
+
   useEffect(() => {
     setSelected([])
     if (school && academicYear)
@@ -54,14 +78,11 @@ export default function FinalResult() {
       {
         !(Boolean(schoolName) && Boolean(school)) ?
           <InfoPage
-            title="SEMIS-Final-Result"
+            title={infoPageContent.title}
             sections={[
               {
-                sectionTitle: "Follow the instructions to proceed:",
-                instructions: [
-                  "Select the Organization unit you want to view data",
-                  "Use global filters(Class, Grade and Academic Year)"
-                ]
+                sectionTitle: infoPageContent.sectionTitle,
+                instructions: infoPageContent.instructions
               }
             ]}
           />
@@ -69,7 +90,7 @@ export default function FinalResult() {
           <>
             <Table
               programConfig={programData!}
-              title="Final Results"
+              title={tableTitle}
               viewPortWidth={viewPortWidth}
               columns={columns}
               tableData={updatedData}
