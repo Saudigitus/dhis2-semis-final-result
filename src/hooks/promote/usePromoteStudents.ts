@@ -34,7 +34,9 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
         }
 
         for (const tei of selected) {
-            const checkAlreadyPromoted = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${schoolCalendar?.academicYear}:in:${values?.[schoolCalendar?.academicYear]}`] })
+            const checkAlreadyPromoted = sectionType === 'staff'
+                ? []
+                : await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${schoolCalendar?.academicYear}:in:${values?.[schoolCalendar?.academicYear]}`] })
 
             if (checkAlreadyPromoted?.length === 0) {
                 let events = []
