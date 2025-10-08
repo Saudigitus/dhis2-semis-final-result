@@ -6,7 +6,7 @@ import { useGetUsedProgramStages, useSchoolCalendarKey } from "dhis2-semis-compo
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {
     const { getEvents } = useGetEvents()
     const { urlParameters } = useUrlParams();
-    const { school: orgUnit, sectionType } = urlParameters;
+    const { school, sectionType } = urlParameters;
     const { uploadValues } = useUploadEvents()
     const schoolCalendar = useSchoolCalendarKey()
     const { dataStoreData, program: programData } = useGetSelectedKeys()
@@ -18,6 +18,8 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
         let registrationEvent: any = []
         let date = format(new Date(), 'yyyy-MM-dd')
         const socioEconomicPStage = dataStoreData["socio-economics"]?.programStage
+
+        const orgUnit = sectionType === 'staff' ? values.registeringSchool : school;
 
         const { registeringSchool, enrollment_date, ...registrationValues } = values
         for (const key in registrationValues) {
@@ -60,6 +62,10 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
 
                 enrollments.push(
                     {
+                        trackedEntity: tei.trackedEntity,
+                        trackedEntityType: dataStoreData.trackedEntityType,
+                        orgUnit,
+                        attributes: tei.attributes || [],
                         enrollments: [
                             {
                                 occurredAt: date,
@@ -69,10 +75,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                                 status: "COMPLETED",
                                 events: events
                             }
-                        ],
-                        orgUnit,
-                        trackedEntityType: dataStoreData.trackedEntityType,
-                        trackedEntity: tei.trackedEntity
+                        ]
                     })
             } else setStats((prev: any) => ({ ...prev, conflicts: [...prev.conflicts, tei] }))
         }
