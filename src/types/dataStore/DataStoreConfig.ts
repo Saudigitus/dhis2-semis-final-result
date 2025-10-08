@@ -46,20 +46,27 @@ interface filters {
     dataElements: filterItem[]
 }
 
+interface finalResult {
+    enabled?: boolean
+    lastUpdate?: string
+    programStage: string
+    status: string
+}
+
 interface dataStoreRecord {
     attendance: attendance
     key: string
     trackedEntityType: string
-    lastUpdate: string
+    lastUpdate?: string
     performance: performance
     program: string
     registration: registration
     ["socio-economics"]: simpleProgramStage
     transfer: transfer
-    ["final-result"]: simpleProgramStage
+    ["final-result"]?: finalResult
     defaults: defaults
     filters: filters
 }
 
 
-export type { dataStoreRecord, transfer, registration, performance, attendance, simpleProgramStage, filterItem}
+export type { dataStoreRecord, transfer, registration, performance, attendance, simpleProgramStage, filterItem, finalResult}
