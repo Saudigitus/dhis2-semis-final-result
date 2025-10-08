@@ -12,12 +12,13 @@ import { useConfig } from '@dhis2/app-runtime';
 import { Tooltip } from '@mui/material';
 import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 import { staticForm } from "../../constants/searchEnrollmentForm";
+import { getContextualLabels } from '../../utils/common/getContextualLabels';
 
 function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
     const { urlParameters } = useUrlParams();
     const schoolCalendar = useSchoolCalendarKey()
     const { baseUrl } = useConfig()
-    const { school: orgUnit, class: section, grade, academicYear } = urlParameters;
+    const { school: orgUnit, class: section, grade, academicYear, sectionType } = urlParameters;
     const { sectionName } = useGetSectionTypeLabel();
     const { dataStoreData } = useGetSelectedKeys()
     const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment, schoolCalendar: schoolCalendar });
@@ -27,6 +28,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const [loading, setLoading] = useState(true)
     const { hide, show } = useShowAlerts()
     const { areAllSelected, getFilters } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
+    const labels = getContextualLabels(sectionType as string)
 
     const showAlert = (error: any) => {
         show({ message: `Unknown error: ${error}`, type: { critical: true } })
@@ -51,14 +53,14 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
         {
             label: <DataImporter
                 baseURL={baseUrl}
-                label={'Bulk Final Result'}
+                label={labels.bulkButtonLabel}
                 module='final-result'
                 onError={(e: any) => { showAlert(e) }}
                 programConfig={programData}
                 sectionType={sectionName}
                 selectedSectionDataStore={selectedDataStoreKey}
                 updating={false}
-                title={"Bulk Final Result"}
+                title={labels.bulkImportTitle}
             />,
             divider: true,
             disabled: false,
@@ -71,7 +73,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                     ...(academicYear ? [`${schoolCalendar?.academicYear}:in:${academicYear}`] : []),
                     ...getFilters() as unknown as any
                 ]}
-                label='Export Final Result'
+                label={labels.exportLabel}
                 module='final-result'
                 onError={(e: any) => { showAlert(e) }}
                 programConfig={programData}
@@ -97,10 +99,10 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                     <PerformPromotion formData={[staticForm().registeringSchool, ...enrollmentDetails, staticForm().enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
-                <Tooltip title={(section === null || grade === null || academicYear == undefined) ? "Please select section and grade" : ""} >
+                <Tooltip title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
                     <span>
                         <DropdownButton
-                            name={<span className={styles.work_buttons_text}>Bulk Final Result</span> as unknown as string}
+                            name={<span className={styles.work_buttons_text}>{labels.bulkButtonLabel}</span> as unknown as string}
                             disabled={!!(orgUnit == undefined || !areAllSelected() || academicYear == undefined)}
                             icon={<IconUserGroup16 />}
                             options={enrollmentOptions}

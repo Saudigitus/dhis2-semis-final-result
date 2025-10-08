@@ -7,18 +7,20 @@ import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis-components";
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
 import { format } from "date-fns";
+import { getContextualLabels } from "../../utils/common/getContextualLabels";
 
 export default function AsssignFinalResult({ selected }: { selected: any[] }) {
     const { dataStoreData } = useGetSelectedKeys()
     const { "final-result": finalResult, trackedEntityType } = dataStoreData
     const { dataElements } = useGetDataElements({ programStageId: finalResult?.programStage as unknown as string, type: "programStage" })
     const { urlParameters } = useUrlParams()
-    const { school } = urlParameters
+    const { school, sectionType } = urlParameters
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { uploadValues } = useUploadEvents()
     const { getEvents } = useGetEvents()
     const setRefetch = useSetRecoilState(TableDataRefetch);
+    const labels = getContextualLabels(sectionType as string)
 
     async function formSubmit(values: any) {
         setLoading(true)
@@ -112,7 +114,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                 setOpen(true);
             }} icon={<IconAddCircle24 />}
             >
-                <span>Assign final result</span>
+                <span>{labels.assignButtonLabel}</span>
             </Button >
 
             {
@@ -129,8 +131,8 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                                     formFields={[
                                         {
                                             storyBook: false,
-                                            name: "Final Result",
-                                            description: "Student final result",
+                                            name: labels.assignFormName,
+                                            description: labels.assignFormDescription,
                                             fields: dataElements
                                         }
                                     ]}
@@ -144,7 +146,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                     </WithPadding>}
                     open={open}
                     handleClose={() => setOpen(false)}
-                    title="Assign Final Result"
+                    title={labels.assignModalTitle}
                 />
             }
         </>

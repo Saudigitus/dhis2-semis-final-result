@@ -7,15 +7,17 @@ import { RulesEngine, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
 import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
 import { Tooltip } from "@mui/material";
+import { getContextualLabels } from "../../utils/common/getContextualLabels";
 
 export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
     const { urlParameters } = useUrlParams()
-    const { schoolName, school } = urlParameters
+    const { schoolName, school, sectionType } = urlParameters
     const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school });
     const { promote } = usePromoteStudents({ selected, setOpen: openStats, setStats, setOpenPerform: setOpen, setLoading })
+    const labels = getContextualLabels(sectionType as string)
 
     const promotableStudents = selected.filter(estudante => {
         const dvs = estudante.frEvent?.dataValues ?? [];
@@ -59,13 +61,13 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     return (
         <>
             <Tooltip
-                title={promotableStudents?.length > 0 ? "Some selected students have no final result or were not promoted." : ""}
+                title={promotableStudents?.length > 0 ? labels.noResultMessage : ""}
             >
                 <Button disabled={promotableStudents?.length > 0 || selected.length == 0} onClick={() => {
                     setOpen(true);
                 }} icon={<IconAddCircle24 />}
                 >
-                    <span>Perform promotion</span>
+                    <span>{labels.promoteButtonLabel}</span>
                 </Button >
             </Tooltip>
             {
@@ -84,8 +86,8 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                                     formFields={[
                                         {
                                             storyBook: false,
-                                            name: "Student promotion",
-                                            description: "Student promotion",
+                                            name: labels.formName,
+                                            description: labels.formDescription,
                                             fields: updatedVariables || [],
                                         }
                                     ]}
@@ -101,7 +103,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                     </WithPadding>}
                     open={open}
                     handleClose={() => setOpen(false)}
-                    title="Perform Promotion"
+                    title={labels.promoteModalTitle}
                 />
             }
         </>

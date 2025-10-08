@@ -3,18 +3,22 @@ import { ModalComponent, SummaryCard, Table, WithPadding } from "dhis2-semis-com
 import styles from './showStats.module.css'
 import { Collapse } from "@mui/material";
 import { useState } from "react";
-import { useHeader, useViewPortWidth } from "dhis2-semis-functions";
+import { useHeader, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 import { ProgramConfig, TableDataRefetch } from "dhis2-semis-types";
 import { useSetRecoilState } from "recoil";
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { InfoOutlined } from "@mui/icons-material";
+import { getContextualLabels } from "../../utils/common/getContextualLabels";
 
 export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: boolean) => void, open: boolean, stats: any }) {
     const [showDetails, setShowDetails] = useState(false)
     const { dataStoreData, program: programData } = useGetSelectedKeys();
     const { viewPortWidth } = useViewPortWidth();
+    const { urlParameters } = useUrlParams();
+    const { sectionType } = urlParameters;
     const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: dataStoreData?.registration?.programStage as unknown as string });
     const setRefetch = useSetRecoilState(TableDataRefetch);
+    const labels = getContextualLabels(sectionType as string)
 
     return (
         <ModalComponent
@@ -22,15 +26,15 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
             handleClose={() => setOpen(!open)}
             children={
                 <div>
-                    <Tag positive icon={<IconCheckmarkCircle16 />}> Students promotion preview </Tag>
+                    <Tag positive icon={<IconCheckmarkCircle16 />}> {labels.summaryPreviewTag} </Tag>
 
                     <WithPadding />
                     <label className={styles.title}>Summary</label>
                     <WithPadding />
 
                     <ButtonStrip>
-                        <SummaryCard color="success" label="Promoted students" value={stats?.posted ?? 0} />
-                        <SummaryCard color="error" label="No promoted students" value={stats?.conflicts?.length ?? 0} />
+                        <SummaryCard color="success" label={labels.successLabel} value={stats?.posted ?? 0} />
+                        <SummaryCard color="error" label={labels.failureLabel} value={stats?.conflicts?.length ?? 0} />
                     </ButtonStrip>
 
                     <WithPadding />
@@ -40,7 +44,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                                 <Button small icon={<InfoOutlined />} onClick={() => setShowDetails(!showDetails)}>More details</Button>
                             </ButtonStrip>
                             <br />
-                            <span style={{ color: "red" }}>The following students were not promoted. They already exist on the selected academic year</span>
+                            <span style={{ color: "red" }}>{labels.conflictMessage}</span>
                         </>
                         : null}
                     <WithPadding />
@@ -66,7 +70,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                     </ButtonStrip>
                 </ div>
             }
-            title="Students Promotion Summary"
+            title={labels.summaryTitle}
         />
     )
 }
