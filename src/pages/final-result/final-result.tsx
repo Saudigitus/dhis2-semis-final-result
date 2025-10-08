@@ -48,6 +48,7 @@ export default function FinalResult() {
 
   const infoPageContent = getInfoPageContent()
   const tableTitle = sectionType === 'staff' ? 'Staff Re-enrollment' : 'Final Results'
+  const inactiveRowMessage = sectionType === 'staff' ? 'Terminated' : 'Dropout'
 
   useEffect(() => {
     setSelected([])
@@ -94,7 +95,7 @@ export default function FinalResult() {
               viewPortWidth={viewPortWidth}
               columns={columns}
               tableData={updatedData}
-              inactiveRowMessage='Dropout'
+              inactiveRowMessage={inactiveRowMessage}
               filterState={filetrState}
               loading={loading}
               rightElements={
