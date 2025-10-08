@@ -11,8 +11,11 @@ import { getContextualLabels } from "../../utils/common/getContextualLabels";
 
 export default function AsssignFinalResult({ selected }: { selected: any[] }) {
     const { dataStoreData } = useGetSelectedKeys()
-    const { "final-result": finalResult, trackedEntityType } = dataStoreData
-    const { dataElements } = useGetDataElements({ programStageId: finalResult?.programStage as unknown as string, type: "programStage" })
+    const { "final-result": finalResult, trackedEntityType } = dataStoreData || {}
+    const { dataElements } = useGetDataElements({
+        programStageId: finalResult?.programStage || '',
+        type: "programStage"
+    })
     const { urlParameters } = useUrlParams()
     const { school, sectionType } = urlParameters
     const [open, setOpen] = useState(false)
@@ -133,7 +136,7 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
                                             storyBook: false,
                                             name: labels.assignFormName,
                                             description: labels.assignFormDescription,
-                                            fields: dataElements
+                                            fields: dataElements || []
                                         }
                                     ]}
                                     storyBook={false}

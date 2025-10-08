@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Form } from "react-final-form";
-import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
+import { NoticeBox, Button, IconAddCircle24, CircularLoader, Center } from "@dhis2/ui";
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { RulesEngine, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
 import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
 import { Tooltip } from "@mui/material";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
+import { useAccessibleOrgUnits } from "../../hooks/common/useAccessibleOrgUnits";
 
 export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
     const { urlParameters } = useUrlParams()
@@ -15,16 +16,32 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school });
     const { promote } = usePromoteStudents({ selected, setOpen: openStats, setStats, setOpenPerform: setOpen, setLoading })
     const labels = getContextualLabels(sectionType as string)
+    const { orgUnits, loading: orgUnitsLoading, error: orgUnitsError, retry, hasOrgUnits } = useAccessibleOrgUnits()
 
-    const promotableStudents = selected.filter(estudante => {
-        const dvs = estudante.frEvent?.dataValues ?? [];
-        return dvs.length === 0 || dvs.some((dv: any) =>
+    const getInitialOrgUnit = () => {
+        if (sectionType !== 'staff' || !orgUnits.length) return school;
+        const currentSchoolExists = orgUnits.some(ou => ou.id === school);
+        return currentSchoolExists ? school : orgUnits[0]?.id;
+    };
+
+    const [selectedOrgUnit, setSelectedOrgUnit] = useState<string | undefined>(getInitialOrgUnit() || undefined);
+    const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school || undefined });
+
+    const validStatusForReenrollment = sectionType === 'staff' ? 're-enrol' : 'promoted';
+
+    const nonPromotableEntities = selected.filter(entity => {
+        const dvs = entity.frEvent?.dataValues ?? [];
+
+        if (dvs.length === 0) return true;
+
+        const hasValidStatus = dvs.some((dv: any) =>
             dv.dataElement === dataStoreData["final-result"]?.status &&
-            dv.value?.toLowerCase() !== "promoted"
+            dv.value?.toLowerCase() === validStatusForReenrollment
         );
+
+        return !hasValidStatus;
     });
 
 
@@ -42,28 +59,66 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
         });
     }, [school])
 
+    useEffect(() => {
+        if (sectionType === 'staff' && orgUnits.length > 0) {
+            const initialOrgUnit = getInitialOrgUnit();
+            setSelectedOrgUnit(initialOrgUnit || undefined);
+        }
+    }, [orgUnits, sectionType])
+
 
     useEffect(() => {
         runRulesEngine()
     }, [values])
 
+    const modifyRegisteringSchoolField = (fields: any[]) => {
+        if (sectionType !== 'staff') return fields;
+
+        return fields.map(field => {
+            if (field.name === 'registeringSchool') {
+                return {
+                    ...field,
+                    disabled: false,
+                    valueType: "ORGANISATION_UNIT",
+                    options: orgUnits.map(ou => ({
+                        code: ou.id,
+                        label: ou.displayName,
+                        value: ou.id,
+                        name: ou.displayName
+                    })),
+                    searchable: true,
+                    required: true,
+                    assignedValue: selectedOrgUnit || school
+                };
+            }
+            return field;
+        });
+    }
+
 
     const handleChange = (e: { field: any; value: string; name: string }) => {
         const { name, value } = e;
+
+        if (name === 'registeringSchool' && sectionType === 'staff') {
+            setSelectedOrgUnit(value);
+        }
+
         setValues(prev => ({
             ...prev,
             [name]: value,
         }));
     };
 
-    const onClick = async (values: any) => await promote(values)
+    const onClick = async (values: any) => {
+        await promote(values);
+    }
 
     return (
         <>
             <Tooltip
-                title={promotableStudents?.length > 0 ? labels.noResultMessage : ""}
+                title={nonPromotableEntities?.length > 0 ? labels.noResultMessage : ""}
             >
-                <Button disabled={promotableStudents?.length > 0 || selected.length == 0} onClick={() => {
+                <Button disabled={nonPromotableEntities?.length > 0 || selected.length == 0} onClick={() => {
                     setOpen(true);
                 }} icon={<IconAddCircle24 />}
                 >
@@ -77,29 +132,56 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                             No one will be able to access this program. Add some Organisation Units to the access list.
                         </NoticeBox>
                         <WithPadding />
-                        <WithBorder type="all" >
-                            <WithPadding>
-                                <CustomForm
-                                    Form={Form}
-                                    loading={loading}
-                                    initialValues={{ registeringSchool: schoolName, enrollment_date: format(new Date(), 'yyyy-MM-dd') }}
-                                    formFields={[
-                                        {
-                                            storyBook: false,
-                                            name: labels.formName,
-                                            description: labels.formDescription,
-                                            fields: updatedVariables || [],
-                                        }
-                                    ]}
-                                    storyBook={false}
-                                    withButtons={true}
-                                    onFormSubtmit={(values) => onClick(values)}
-                                    onCancel={() => setOpen(false)}
-                                    setFormValues={setValues}
-                                    onInputChange={handleChange}
-                                />
-                            </WithPadding>
-                        </WithBorder>
+
+                        {sectionType === 'staff' && orgUnitsLoading && (
+                            <Center>
+                                <CircularLoader small />
+                                <p>Loading organization units...</p>
+                            </Center>
+                        )}
+
+                        {sectionType === 'staff' && orgUnitsError && (
+                            <NoticeBox error title="Error loading organization units">
+                                Failed to load accessible organization units. {orgUnitsError.message}
+                                <WithPadding />
+                                <Button onClick={retry}>Retry</Button>
+                            </NoticeBox>
+                        )}
+
+                        {sectionType === 'staff' && !orgUnitsLoading && !orgUnitsError && !hasOrgUnits && (
+                            <NoticeBox error title="No accessible organization units">
+                                You do not have data-entry access to any organization units. Contact your administrator to grant you the necessary permissions.
+                            </NoticeBox>
+                        )}
+
+                        {((sectionType === 'staff' && hasOrgUnits && !orgUnitsLoading && !orgUnitsError) || sectionType !== 'staff') && (
+                            <WithBorder type="all" >
+                                <WithPadding>
+                                    <CustomForm
+                                        Form={Form}
+                                        loading={loading}
+                                        initialValues={{
+                                            registeringSchool: sectionType === 'staff' ? (selectedOrgUnit || school) : schoolName,
+                                            enrollment_date: format(new Date(), 'yyyy-MM-dd')
+                                        }}
+                                        formFields={[
+                                            {
+                                                storyBook: false,
+                                                name: labels.formName,
+                                                description: labels.formDescription,
+                                                fields: modifyRegisteringSchoolField(updatedVariables || []),
+                                            }
+                                        ]}
+                                        storyBook={false}
+                                        withButtons={true}
+                                        onFormSubtmit={(values) => onClick(values)}
+                                        onCancel={() => setOpen(false)}
+                                        setFormValues={setValues}
+                                        onInputChange={handleChange}
+                                    />
+                                </WithPadding>
+                            </WithBorder>
+                        )}
                     </WithPadding>}
                     open={open}
                     handleClose={() => setOpen(false)}
