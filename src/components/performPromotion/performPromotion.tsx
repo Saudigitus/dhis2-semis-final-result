@@ -29,7 +29,9 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     const [selectedOrgUnit, setSelectedOrgUnit] = useState<string | undefined>(getInitialOrgUnit() || undefined);
     const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school || undefined });
 
-    const statusDataElementId = dataStoreData?.["final-result"]?.status;
+    const finalResultConfig = dataStoreData?.["final-result"];
+    const statusDataElementId = finalResultConfig?.status;
+    const validStatusValue = (finalResultConfig as any)?.validStatusValue || (sectionType === 'staff' ? 'ReEnrol' : 'promoted');
 
     const nonPromotableEntities = selected.filter(entity => {
         const dvs = entity.frEvent?.dataValues ?? [];
@@ -38,8 +40,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
         const hasValidStatus = dvs.some((dv: any) =>
             dv.dataElement === statusDataElementId &&
-            dv.value != null &&
-            dv.value !== ''
+            dv.value?.toLowerCase() === validStatusValue?.toLowerCase()
         );
 
         return !hasValidStatus;
