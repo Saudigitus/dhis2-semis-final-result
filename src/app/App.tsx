@@ -15,7 +15,7 @@ const MyApp = () => {
         //     schoolCalendarKey='dataStore/semis/schoolCalendar'
         // >
         //     <HashRouter>
-                <Router />
+        <Router />
         //     </HashRouter >
         // </AppWrapper>
     )

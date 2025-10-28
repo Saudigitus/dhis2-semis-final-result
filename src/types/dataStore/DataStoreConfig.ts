@@ -51,6 +51,7 @@ interface finalResult {
     lastUpdate?: string
     programStage: string
     status: string
+    validStatusValue?: string[]
 }
 
 interface dataStoreRecord {
