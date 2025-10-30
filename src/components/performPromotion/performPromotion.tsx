@@ -9,6 +9,7 @@ import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis
 import { Tooltip } from "@mui/material";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
 import { useAccessibleOrgUnits } from "../../hooks/common/useAccessibleOrgUnits";
+import i18n from "../../locales";
 
 export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
     const { urlParameters } = useUrlParams()
@@ -116,9 +117,14 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
         await promote(values);
     }
 
+
     const getTooltipMessage = () => {
         if (!hasValidConfiguration) {
-            return `Configuration error: validStatusValue not set in DataStore for ${sectionType}`;
+            return i18n.t(`Configuration error. ValidStatusValue not set in DataStore for {{sectionType}}`,
+                {
+                    sectionType: i18n.t(sectionType)
+                }
+            );
         }
         if (nonPromotableEntities?.length > 0) {
             return labels.noResultMessage;
@@ -141,8 +147,8 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
             {
                 open && <ModalComponent
                     children={<WithPadding>
-                        <NoticeBox title={`WARNING! ${selected.length} rows will be affected`} warning>
-                            No one will be able to access this program. Add some Organisation Units to the access list.
+                        <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
+                            {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
                         </NoticeBox>
                         <WithPadding />
 
@@ -154,16 +160,16 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                         )}
 
                         {sectionType === 'staff' && orgUnitsError && (
-                            <NoticeBox error title="Error loading organization units">
-                                Failed to load accessible organization units. {orgUnitsError.message}
+                            <NoticeBox error title={i18n.t("Error loading organization units")}>
+                                {i18n.t("Failed to load accessible organization units")}. {orgUnitsError.message}
                                 <WithPadding />
                                 <Button onClick={retry}>Retry</Button>
                             </NoticeBox>
                         )}
 
                         {sectionType === 'staff' && !orgUnitsLoading && !orgUnitsError && !hasOrgUnits && (
-                            <NoticeBox error title="No accessible organization units">
-                                You do not have data-entry access to any organization units. Contact your administrator to grant you the necessary permissions.
+                            <NoticeBox error title={i18n.t("No accessible organization units")}>
+                                {i18n.t("You do not have data-entry access to any organization units. Contact your administrator to grant you the necessary permissions")}.
                             </NoticeBox>
                         )}
 

@@ -9,7 +9,7 @@ export default function Router() {
             <Route path='/'
                 element={<WithHeaderBarLayout />}
             >
-                <Route key={'final-result'} path={'/'} element={<FinalResult />} />
+                <Route key={'final-result'} path={'/'} element={<FinalResult/>} />
             </Route>
         </Routes>
     );

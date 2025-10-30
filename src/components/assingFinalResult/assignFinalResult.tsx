@@ -8,6 +8,7 @@ import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
 import { format } from "date-fns";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
+import i18n from "../../locales";
 
 export default function AsssignFinalResult({ selected }: { selected: any[] }) {
     const { dataStoreData } = useGetSelectedKeys()
@@ -123,8 +124,8 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
             {
                 open && <ModalComponent
                     children={<WithPadding>
-                        <NoticeBox title={`WARNING! ${selected.length} rows will be affected`} warning>
-                            No one will be able to access this program. Add some Organisation Units to the access list.
+                        <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
+                            {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
                         </NoticeBox>
                         <WithBorder type="all" >
                             <WithPadding>

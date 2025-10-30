@@ -5,13 +5,199 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-03-19T07:22:11.240Z\n"
-"PO-Revision-Date: 2025-03-19T07:22:11.241Z\n"
+"POT-Creation-Date: 2025-10-30T14:49:43.618Z\n"
+"PO-Revision-Date: 2025-10-30T14:49:43.619Z\n"
 
-msgctxt "Application title"
-msgid "__MANIFEST_APP_TITLE"
+msgid "WARNING"
+msgstr "WARNING"
+
+msgid "rows will be affected"
+msgstr "rows will be affected"
+
+msgid ""
+"No one will be able to access this program. Add some Organisation Units to "
+"the access list"
+msgstr ""
+"No one will be able to access this program. Add some Organisation Units to "
+"the access list"
+
+msgid ""
+"Configuration error. ValidStatusValue not set in DataStore for "
+"{{sectionType}}"
+msgstr ""
+"Configuration error. ValidStatusValue not set in DataStore for "
+"{{sectionType}}"
+
+msgid "Error loading organization units"
+msgstr "Error loading organization units"
+
+msgid "Failed to load accessible organization units"
+msgstr "Failed to load accessible organization units"
+
+msgid "No accessible organization units"
+msgstr "No accessible organization units"
+
+msgid ""
+"You do not have data-entry access to any organization units. Contact your "
+"administrator to grant you the necessary permissions"
+msgstr ""
+"You do not have data-entry access to any organization units. Contact your "
+"administrator to grant you the necessary permissions"
+
+msgid "Registering School"
+msgstr "Registering School"
+
+msgid "Enrollment date"
+msgstr "Enrollment date"
+
+msgid "Number of Students"
+msgstr "Number of Students"
+
+msgid "Maximum number of students supported for each file"
+msgstr "Maximum number of students supported for each file"
+
+msgid "SEMIS-Staff-Re-enrollment"
+msgstr "SEMIS-Staff-Re-enrollment"
+
+msgid "Follow the instructions to proceed"
+msgstr "Follow the instructions to proceed"
+
+msgid "Select the Organization unit you want to view data"
+msgstr "Select the Organization unit you want to view data"
+
+msgid "Use global filters(Type of Staff, Employment Type and Academic Year)"
+msgstr "Use global filters(Type of Staff, Employment Type and Academic Year)"
+
+msgid "SEMIS-Final-Result"
 msgstr "SEMIS-Final-Result"
 
-msgctxt "Application description"
-msgid "__MANIFEST_APP_DESCRIPTION"
-msgstr "SEMIS-Final-Result"
+msgid "Use global filters(Class, Grade and Academic Year)"
+msgstr "Use global filters(Class, Grade and Academic Year)"
+
+msgid "Staff Re-enrollment"
+msgstr "Staff Re-enrollment"
+
+msgid "Final Results"
+msgstr "Final Results"
+
+msgid "Terminated"
+msgstr "Terminated"
+
+msgid "Dropout"
+msgstr "Dropout"
+
+msgid "Assign re-enrollment status"
+msgstr "Assign re-enrollment status"
+
+msgid "Assign final result"
+msgstr "Assign final result"
+
+msgid "Perform re-enrollment"
+msgstr "Perform re-enrollment"
+
+msgid "Perform promotion"
+msgstr "Perform promotion"
+
+msgid "Bulk Staff Re-enrollment"
+msgstr "Bulk Staff Re-enrollment"
+
+msgid "Bulk Final Result"
+msgstr "Bulk Final Result"
+
+msgid "Assign Re-enrollment Status"
+msgstr "Assign Re-enrollment Status"
+
+msgid "Assign Final Result"
+msgstr "Assign Final Result"
+
+msgid "Perform Re-enrollment"
+msgstr "Perform Re-enrollment"
+
+msgid "Perform Promotion"
+msgstr "Perform Promotion"
+
+msgid "Staff re-enrollment"
+msgstr "Staff re-enrollment"
+
+msgid "Student promotion"
+msgstr "Student promotion"
+
+msgid "Staff Re-enrollment Status"
+msgstr "Staff Re-enrollment Status"
+
+msgid "Final Result"
+msgstr "Final Result"
+
+msgid "Staff re-enrollment status"
+msgstr "Staff re-enrollment status"
+
+msgid "Student final result"
+msgstr "Student final result"
+
+msgid "Some selected staff have no re-enrollment status or were not re-enrolled."
+msgstr "Some selected staff have no re-enrollment status or were not re-enrolled."
+
+msgid "Some selected students have no final result or were not promoted."
+msgstr "Some selected students have no final result or were not promoted."
+
+msgid "Please select an organisation unit before"
+msgstr "Please select an organisation unit before"
+
+msgid "Please select type of staff and employment type"
+msgstr "Please select type of staff and employment type"
+
+msgid "Please select section and grade"
+msgstr "Please select section and grade"
+
+msgid "Re-enrolled staff"
+msgstr "Re-enrolled staff"
+
+msgid "Promoted students"
+msgstr "Promoted students"
+
+msgid "Not re-enrolled staff"
+msgstr "Not re-enrolled staff"
+
+msgid "No promoted students"
+msgstr "No promoted students"
+
+msgid "Staff Re-enrollment Summary"
+msgstr "Staff Re-enrollment Summary"
+
+msgid "Students Promotion Summary"
+msgstr "Students Promotion Summary"
+
+msgid "Staff re-enrollment preview"
+msgstr "Staff re-enrollment preview"
+
+msgid "Students promotion preview"
+msgstr "Students promotion preview"
+
+msgid ""
+"The following staff were not re-enrolled. They already exist on the "
+"selected academic year"
+msgstr ""
+"The following staff were not re-enrolled. They already exist on the "
+"selected academic year"
+
+msgid ""
+"The following students were not promoted. They already exist on the "
+"selected academic year"
+msgstr ""
+"The following students were not promoted. They already exist on the "
+"selected academic year"
+
+msgid "Export Staff Re-enrollment"
+msgstr "Export Staff Re-enrollment"
+
+msgid "Export Final Result"
+msgstr "Export Final Result"
+
+msgid "staff"
+msgstr "staff"
+
+msgid "student"
+msgstr "student"
+
+msgid "students"
+msgstr "students"
