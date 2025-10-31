@@ -122,7 +122,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
         if (!hasValidConfiguration) {
             return i18n.t(`Configuration error. ValidStatusValue not set in DataStore for {{sectionType}}`,
                 {
-                    sectionType: i18n.t(sectionType)
+                    sectionType: i18n.t(sectionType!)
                 }
             );
         }
