@@ -1,16 +1,15 @@
 import { useRecoilValue } from 'recoil';
 import { Table, useSchoolCalendarKey } from "dhis2-semis-components";
 import { InfoPage } from 'dhis2-semis-components'
-import { ProgramConfig } from 'dhis2-semis-types'
+import { D2I18n, ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
 import { TableDataRefetch, Modules } from "dhis2-semis-types"
 import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 import { useFinalResultConst } from '../../hooks/common/finalResultConst';
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
 import { useCheckFilters, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
-import i18n from '../../locales/index';
 
-export default function FinalResult() {
+export default function FinalResult({ i18n }: { i18n: D2I18n }) {
   const { viewPortWidth } = useViewPortWidth();
   const { urlParameters } = useUrlParams();
   const [selected, setSelected] = useState([])
