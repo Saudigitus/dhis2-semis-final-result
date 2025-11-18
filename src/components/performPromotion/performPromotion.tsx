@@ -29,7 +29,10 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     const [selectedOrgUnit, setSelectedOrgUnit] = useState<string | undefined>(getInitialOrgUnit() || undefined);
     const [values, setValues] = useState<{ [key: string]: any }>({ orgUnit: school || undefined });
 
-    const validStatusForReenrollment = sectionType === 'staff' ? 're-enrol' : 'promoted';
+    const finalResultConfig = dataStoreData?.["final-result"];
+    const statusDataElementId = finalResultConfig?.status;
+    const validStatusValues = (finalResultConfig as any)?.validStatusValue || [];
+    const hasValidConfiguration = validStatusValues.length > 0;
 
     const nonPromotableEntities = selected.filter(entity => {
         const dvs = entity.frEvent?.dataValues ?? [];
@@ -37,8 +40,8 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
         if (dvs.length === 0) return true;
 
         const hasValidStatus = dvs.some((dv: any) =>
-            dv.dataElement === dataStoreData["final-result"]?.status &&
-            dv.value?.toLowerCase() === validStatusForReenrollment
+            dv.dataElement === statusDataElementId &&
+            validStatusValues.map((v: string) => v.toLowerCase()).includes(dv.value?.toLowerCase())
         );
 
         return !hasValidStatus;
@@ -113,12 +116,22 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
         await promote(values);
     }
 
+    const getTooltipMessage = () => {
+        if (!hasValidConfiguration) {
+            return `Configuration error: validStatusValue not set in DataStore for ${sectionType}`;
+        }
+        if (nonPromotableEntities?.length > 0) {
+            return labels.noResultMessage;
+        }
+        return "";
+    };
+
     return (
         <>
             <Tooltip
-                title={nonPromotableEntities?.length > 0 ? labels.noResultMessage : ""}
+                title={getTooltipMessage()}
             >
-                <Button disabled={nonPromotableEntities?.length > 0 || selected.length == 0} onClick={() => {
+                <Button disabled={!hasValidConfiguration || nonPromotableEntities?.length > 0 || selected.length == 0} onClick={() => {
                     setOpen(true);
                 }} icon={<IconAddCircle24 />}
                 >

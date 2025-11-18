@@ -96,6 +96,7 @@ export default function FinalResult() {
               columns={columns}
               tableData={updatedData}
               inactiveRowMessage={inactiveRowMessage}
+              enableInactiveRowSelection={true}
               filterState={filetrState}
               loading={loading}
               rightElements={
