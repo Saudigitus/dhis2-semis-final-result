@@ -1,8 +1,7 @@
 import { format } from "date-fns";
 import { VariablesTypes } from "dhis2-semis-types";
-import i18n from "../locales";
 
-export const staticForm = () => {
+export const staticForm = ({i18n}:{i18n:any}) => {
   return {
     registeringSchool: {
       required: false,

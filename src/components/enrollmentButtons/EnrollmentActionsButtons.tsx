@@ -15,7 +15,7 @@ import { staticForm } from "../../constants/searchEnrollmentForm";
 import { getContextualLabels } from '../../utils/common/getContextualLabels';
 import { useSetRecoilState } from 'recoil';
 
-function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,i18n }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey,i18n:any }) {
+function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected, i18n }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey, i18n: any }) {
     const { urlParameters } = useUrlParams();
     const schoolCalendar = useSchoolCalendarKey()
     const { baseUrl } = useConfig()
@@ -99,7 +99,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,
                 </Tooltip>
 
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""} >
-                    <PerformPromotion i18n={i18n} formData={[staticForm().registeringSchool, ...enrollmentDetails, staticForm().enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
+                    <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm(i18n).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
                 <Tooltip title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
