@@ -101,6 +101,7 @@ export default function FinalResult({ i18n }: { i18n: D2I18n }) {
               loading={loading}
               rightElements={
                 <EnrollmentActionsButtons
+                  i18n={i18n}
                   selected={selected}
                   selectedDataStoreKey={dataStoreData}
                   programData={programData as unknown as ProgramConfig}

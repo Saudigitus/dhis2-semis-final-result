@@ -8,9 +8,8 @@ import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
 import { format } from "date-fns";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
-import i18n from "../../locales";
 
-export default function AsssignFinalResult({ selected }: { selected: any[] }) {
+export default function AsssignFinalResult({ selected, i18n}: { selected: any[],i18n:any }) {
     const { dataStoreData } = useGetSelectedKeys()
     const { "final-result": finalResult, trackedEntityType } = dataStoreData || {}
     const { dataElements } = useGetDataElements({

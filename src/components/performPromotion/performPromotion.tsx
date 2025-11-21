@@ -9,9 +9,8 @@ import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis
 import { Tooltip } from "@mui/material";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
 import { useAccessibleOrgUnits } from "../../hooks/common/useAccessibleOrgUnits";
-import i18n from "../../locales";
 
-export default function PerformPromotion({ selected, setStats, openStats, formData = [] }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[] }) {
+export default function PerformPromotion({ selected, setStats, openStats, formData = [], i18n }: { openStats: (args: boolean) => void, setStats: any, selected: any[], formData: any[], i18n: any }) {
     const { urlParameters } = useUrlParams()
     const { schoolName, school, sectionType } = urlParameters
     const { program: programData, dataStoreData } = useGetSelectedKeys()
