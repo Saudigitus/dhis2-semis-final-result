@@ -1,40 +1,72 @@
+import i18next from "@dhis2/d2-i18n";
+
 export const getContextualLabels = (sectionType: string) => {
     const isStaff = sectionType === 'staff';
 
     return {
-        assignButtonLabel: isStaff ? 'Assign re-enrollment status' : 'Assign final result',
-        promoteButtonLabel: isStaff ? 'Perform re-enrollment' : 'Perform promotion',
-        bulkButtonLabel: isStaff ? 'Bulk Staff Re-enrollment' : 'Bulk Final Result',
+        assignButtonLabel: isStaff
+            ? i18next.t('Assign re-enrollment status')
+            : i18next.t('Assign final result'),
+        promoteButtonLabel: isStaff
+            ? i18next.t('Perform re-enrollment')
+            : i18next.t('Perform promotion'),
+        bulkButtonLabel: isStaff
+            ? i18next.t('Bulk Staff Re-enrollment')
+            : i18next.t('Bulk Final Result'),
 
-        assignModalTitle: isStaff ? 'Assign Re-enrollment Status' : 'Assign Final Result',
-        promoteModalTitle: isStaff ? 'Perform Re-enrollment' : 'Perform Promotion',
+        assignModalTitle: isStaff
+            ? i18next.t('Assign Re-enrollment Status')
+            : i18next.t('Assign Final Result'),
+        promoteModalTitle: isStaff
+            ? i18next.t('Perform Re-enrollment')
+            : i18next.t('Perform Promotion'),
 
-        formName: isStaff ? 'Staff re-enrollment' : 'Student promotion',
-        formDescription: isStaff ? 'Staff re-enrollment' : 'Student promotion',
-        assignFormName: isStaff ? 'Staff Re-enrollment Status' : 'Final Result',
-        assignFormDescription: isStaff ? 'Staff re-enrollment status' : 'Student final result',
+        formName: isStaff
+            ? i18next.t('Staff re-enrollment')
+            : i18next.t('Student promotion'),
+        formDescription: isStaff
+            ? i18next.t('Staff re-enrollment')
+            : i18next.t('Student promotion'),
+        assignFormName: isStaff
+            ? i18next.t('Staff Re-enrollment Status')
+            : i18next.t('Final Result'),
+        assignFormDescription: isStaff
+            ? i18next.t('Staff re-enrollment status')
+            : i18next.t('Student final result'),
 
         noResultMessage: isStaff
-            ? 'Some selected staff have no re-enrollment status or were not re-enrolled.'
-            : 'Some selected students have no final result or were not promoted.',
-        selectOrgUnitTooltip: 'Please select an organisation unit before',
+            ? i18next.t('Some selected staff have no re-enrollment status or were not re-enrolled.')
+            : i18next.t('Some selected students have no final result or were not promoted.'),
+        selectOrgUnitTooltip: i18next.t('Please select an organisation unit before'),
         selectFiltersTooltip: isStaff
-            ? 'Please select type of staff and employment type'
-            : 'Please select section and grade',
+            ? i18next.t('Please select type of staff and employment type')
+            : i18next.t('Please select section and grade'),
 
-        successLabel: isStaff ? 'Re-enrolled staff' : 'Promoted students',
-        failureLabel: isStaff ? 'Not re-enrolled staff' : 'No promoted students',
-        summaryTitle: isStaff ? 'Staff Re-enrollment Summary' : 'Students Promotion Summary',
-        summaryPreviewTag: isStaff ? 'Staff re-enrollment preview' : 'Students promotion preview',
+        successLabel: isStaff
+            ? i18next.t('Re-enrolled staff')
+            : i18next.t('Promoted students'),
+        failureLabel: isStaff
+            ? i18next.t('Not re-enrolled staff')
+            : i18next.t('No promoted students'),
+        summaryTitle: isStaff
+            ? i18next.t('Staff Re-enrollment Summary')
+            : i18next.t('Students Promotion Summary'),
+        summaryPreviewTag: isStaff
+            ? i18next.t('Staff re-enrollment preview')
+            : i18next.t('Students promotion preview'),
         conflictMessage: isStaff
-            ? 'The following staff were not re-enrolled. They already exist on the selected academic year'
-            : 'The following students were not promoted. They already exist on the selected academic year',
+            ? i18next.t('The following staff were not re-enrolled. They already exist on the selected academic year')
+            : i18next.t('The following students were not promoted. They already exist on the selected academic year'),
 
-        exportLabel: isStaff ? 'Export Staff Re-enrollment' : 'Export Final Result',
-        bulkImportTitle: isStaff ? 'Bulk Staff Re-enrollment' : 'Bulk Final Result',
+        exportLabel: isStaff
+            ? i18next.t('Export Staff Re-enrollment')
+            : i18next.t('Export Final Result'),
+        bulkImportTitle: isStaff
+            ? i18next.t('Bulk Staff Re-enrollment')
+            : i18next.t('Bulk Final Result'),
 
         // Entity references
-        entityName: isStaff ? 'staff' : 'student',
-        entityNamePlural: isStaff ? 'staff' : 'students',
+        entityName: isStaff ? i18next.t('staff') : i18next.t('student'),
+        entityNamePlural: isStaff ? i18next.t('staff') : i18next.t('students'),
     };
 };

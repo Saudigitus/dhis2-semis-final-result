@@ -1,0 +1,205 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"POT-Creation-Date: 2025-10-30T14:49:43.618Z\n"
+"PO-Revision-Date: 2025-10-30T15:10:00.000Z\n"
+"Language: fr\n"
+"Content-Language: fr-FR\n"
+
+msgid "WARNING"
+msgstr "AVERTISSEMENT"
+
+msgid "rows will be affected"
+msgstr "lignes seront affectées"
+
+msgid ""
+"No one will be able to access this program. Add some Organisation Units to "
+"the access list"
+msgstr ""
+"Personne ne pourra accéder à ce programme. Ajoutez des unités d’organisation à "
+"la liste d’accès"
+
+msgid ""
+"Configuration error. ValidStatusValue not set in DataStore for "
+"{{sectionType}}"
+msgstr ""
+"Erreur de configuration. ValidStatusValue non défini dans le DataStore pour "
+"{{sectionType}}"
+
+msgid "Error loading organization units"
+msgstr "Erreur lors du chargement des unités d’organisation"
+
+msgid "Failed to load accessible organization units"
+msgstr "Échec du chargement des unités d’organisation accessibles"
+
+msgid "No accessible organization units"
+msgstr "Aucune unité d’organisation accessible"
+
+msgid ""
+"You do not have data-entry access to any organization units. Contact your "
+"administrator to grant you the necessary permissions"
+msgstr ""
+"Vous n’avez pas d’accès à la saisie de données pour aucune unité d’organisation. "
+"Contactez votre administrateur pour obtenir les autorisations nécessaires"
+
+msgid "Registering School"
+msgstr "Enregistrement de l’école"
+
+msgid "Enrollment date"
+msgstr "Date d’inscription"
+
+msgid "Number of Students"
+msgstr "Nombre d’élèves"
+
+msgid "Maximum number of students supported for each file"
+msgstr "Nombre maximal d’élèves pris en charge par fichier"
+
+msgid "SEMIS-Staff-Re-enrollment"
+msgstr "SEMIS - Réinscription du personnel"
+
+msgid "Follow the instructions to proceed"
+msgstr "Suivez les instructions pour continuer"
+
+msgid "Select the Organization unit you want to view data"
+msgstr "Sélectionnez l’unité d’organisation dont vous souhaitez voir les données"
+
+msgid "Use global filters(Type of Staff, Employment Type and Academic Year)"
+msgstr "Utilisez les filtres globaux (Type de personnel, Type d’emploi et Année académique)"
+
+msgid "SEMIS-Final-Result"
+msgstr "SEMIS - Résultat final"
+
+msgid "Use global filters(Class, Grade and Academic Year)"
+msgstr "Utilisez les filtres globaux (Classe, Niveau et Année académique)"
+
+msgid "Staff Re-enrollment"
+msgstr "Réinscription du personnel"
+
+msgid "Final Results"
+msgstr "Résultats finaux"
+
+msgid "Terminated"
+msgstr "Résilié"
+
+msgid "Dropout"
+msgstr "Abandon"
+
+msgid "Assign re-enrollment status"
+msgstr "Attribuer le statut de réinscription"
+
+msgid "Assign final result"
+msgstr "Attribuer le résultat final"
+
+msgid "Perform re-enrollment"
+msgstr "Effectuer la réinscription"
+
+msgid "Perform promotion"
+msgstr "Effectuer la promotion"
+
+msgid "Bulk Staff Re-enrollment"
+msgstr "Réinscription en masse du personnel"
+
+msgid "Bulk Final Result"
+msgstr "Résultat final en masse"
+
+msgid "Assign Re-enrollment Status"
+msgstr "Attribuer le statut de réinscription"
+
+msgid "Assign Final Result"
+msgstr "Attribuer le résultat final"
+
+msgid "Perform Re-enrollment"
+msgstr "Effectuer la réinscription"
+
+msgid "Perform Promotion"
+msgstr "Effectuer la promotion"
+
+msgid "Staff re-enrollment"
+msgstr "Réinscription du personnel"
+
+msgid "Student promotion"
+msgstr "Promotion des élèves"
+
+msgid "Staff Re-enrollment Status"
+msgstr "Statut de réinscription du personnel"
+
+msgid "Final Result"
+msgstr "Résultat final"
+
+msgid "Staff re-enrollment status"
+msgstr "Statut de réinscription du personnel"
+
+msgid "Student final result"
+msgstr "Résultat final de l’élève"
+
+msgid "Some selected staff have no re-enrollment status or were not re-enrolled."
+msgstr "Certains membres du personnel sélectionnés n’ont pas de statut de réinscription ou n’ont pas été réinscrits."
+
+msgid "Some selected students have no final result or were not promoted."
+msgstr "Certains élèves sélectionnés n’ont pas de résultat final ou n’ont pas été promus."
+
+msgid "Please select an organisation unit before"
+msgstr "Veuillez d’abord sélectionner une unité d’organisation"
+
+msgid "Please select type of staff and employment type"
+msgstr "Veuillez sélectionner le type de personnel et le type d’emploi"
+
+msgid "Please select section and grade"
+msgstr "Veuillez sélectionner la classe et le niveau"
+
+msgid "Re-enrolled staff"
+msgstr "Personnel réinscrit"
+
+msgid "Promoted students"
+msgstr "Élèves promus"
+
+msgid "Not re-enrolled staff"
+msgstr "Personnel non réinscrit"
+
+msgid "No promoted students"
+msgstr "Aucun élève promu"
+
+msgid "Staff Re-enrollment Summary"
+msgstr "Résumé de la réinscription du personnel"
+
+msgid "Students Promotion Summary"
+msgstr "Résumé de la promotion des élèves"
+
+msgid "Staff re-enrollment preview"
+msgstr "Aperçu de la réinscription du personnel"
+
+msgid "Students promotion preview"
+msgstr "Aperçu de la promotion des élèves"
+
+msgid ""
+"The following staff were not re-enrolled. They already exist on the "
+"selected academic year"
+msgstr ""
+"Les membres du personnel suivants n’ont pas été réinscrits. Ils existent déjà pour "
+"l’année académique sélectionnée"
+
+msgid ""
+"The following students were not promoted. They already exist on the "
+"selected academic year"
+msgstr ""
+"Les élèves suivants n’ont pas été promus. Ils existent déjà pour "
+"l’année académique sélectionnée"
+
+msgid "Export Staff Re-enrollment"
+msgstr "Exporter la réinscription du personnel"
+
+msgid "Export Final Result"
+msgstr "Exporter le résultat final"
+
+msgid "staff"
+msgstr "personnel"
+
+msgid "student"
+msgstr "élève"
+
+msgid "students"
+msgstr "élèves"

@@ -1,68 +1,70 @@
-import { format } from 'date-fns';
-import { VariablesTypes } from 'dhis2-semis-types'
+import { format } from "date-fns";
+import { VariablesTypes } from "dhis2-semis-types";
 
-export const staticForm = () => {
+export const staticForm = ({i18n}:{i18n:any}) => {
   return {
     registeringSchool: {
       required: false,
       name: "registeringSchool",
-      labelName: "Registering School",
+      labelName: i18n.t("Registering School"),
       valueType: "TEXT",
       options: undefined,
       disabled: true,
       pattern: "",
       visible: true,
-      description: "Registering School",
+      description: i18n.t("Registering School"),
       searchable: false,
       error: false,
       programStage: "",
       content: "",
       id: "registeringSchool",
-      displayName: "Registering School",
-      header: "Registering School",
+      displayName: i18n.t("Registering School"),
+      header: i18n.t("Registering School"),
       type: VariablesTypes.DataElement,
-      assignedValue: undefined
+      assignedValue: undefined,
     },
     enrollmentDate: {
       required: true,
       name: "enrollment_date",
-      labelName: "Enrollment date",
+      labelName: i18n.t("Enrollment date"),
       valueType: "DATE",
       options: undefined,
       disabled: false,
       pattern: "",
       visible: true,
-      description: "Enrollment date",
+      description: i18n.t("Enrollment date"),
       searchable: false,
       error: false,
       programStage: "",
       content: "",
       id: "enrollment_date",
-      displayName: "Enrollment date",
-      header: "Enrollment date",
+      displayName: i18n.t("Enrollment date"),
+      header: i18n.t("Enrollment date"),
       type: VariablesTypes.DataElement,
-      assignedValue: format(new Date(), "yyyy-MM-dd")
+      assignedValue: format(new Date(), "yyyy-MM-dd"),
     },
     numberOfStudents: {
       required: false,
       name: "studentsNumber",
-      labelName: "Number of Students",
+      labelName: i18n.t("Number of Students"),
       valueType: "NUMBER",
       options: undefined,
       disabled: false,
       pattern: "",
       visible: true,
-      description: "Number of Students",
+      description: i18n.t("Number of Students"),
       searchable: false,
       error: false,
       programStage: "",
       content: "",
       id: "studentsNumber",
-      displayName: "Number of Students",
-      header: "Number of Students",
+      displayName: i18n.t("Number of Students"),
+      header: i18n.t("Number of Students"),
       type: VariablesTypes.DataElement,
       assignedValue: undefined,
-      placeholder: "Maximum number of students supported for each file: 1000"
-    }
-  }
-}
+      placeholder: `${i18n.t(
+        "Maximum number of students supported for each file"
+      )}: 1000`,
+    },
+  };
+};

@@ -3,7 +3,7 @@ import { ButtonStrip, Center, CircularLoader, IconUserGroup16 } from "@dhis2/ui"
 import styles from './enrollmentActionsButtons.module.css'
 import { useBuildForm, useCheckFilters, useGetSectionTypeLabel, useShowAlerts, useUrlParams } from 'dhis2-semis-functions';
 import { Form } from "react-final-form";
-import { Modules, ProgramConfig, selectedDataStoreKey } from 'dhis2-semis-types'
+import { Modules, ProgramConfig, selectedDataStoreKey, TableDataRefetch } from 'dhis2-semis-types'
 import { DataExporter, DataImporter, CustomDropdown as DropdownButton, useSchoolCalendarKey } from 'dhis2-semis-components';
 import AsssignFinalResult from '../assingFinalResult/assignFinalResult';
 import PerformPromotion from '../performPromotion/performPromotion';
@@ -13,8 +13,9 @@ import { Tooltip } from '@mui/material';
 import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 import { staticForm } from "../../constants/searchEnrollmentForm";
 import { getContextualLabels } from '../../utils/common/getContextualLabels';
+import { useSetRecoilState } from 'recoil';
 
-function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey }) {
+function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected, i18n }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey, i18n: any }) {
     const { urlParameters } = useUrlParams();
     const schoolCalendar = useSchoolCalendarKey()
     const { baseUrl } = useConfig()
@@ -29,6 +30,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
     const { hide, show } = useShowAlerts()
     const { areAllSelected, getFilters } = useCheckFilters({ filters: (dataStoreData.filters.dataElements ?? []) as unknown as any })
     const labels = getContextualLabels(sectionType as string)
+    const setRefetch = useSetRecoilState(TableDataRefetch);
 
     const showAlert = (error: any) => {
         show({ message: `Unknown error: ${error}`, type: { critical: true } })
@@ -61,6 +63,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
                 selectedSectionDataStore={selectedDataStoreKey}
                 updating={false}
                 title={labels.bulkImportTitle}
+                onClose={() => setRefetch(prev => !prev)}
             />,
             divider: true,
             disabled: false,
@@ -92,11 +95,11 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected 
             <ShowStats open={open} setOpen={setOpen} stats={stats} />
             <ButtonStrip className={styles.work_buttons}>
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""}>
-                    <AsssignFinalResult selected={selected} />
+                    <AsssignFinalResult i18n={i18n} selected={selected} />
                 </Tooltip>
 
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""} >
-                    <PerformPromotion formData={[staticForm().registeringSchool, ...enrollmentDetails, staticForm().enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
+                    <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm(i18n).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
                 <Tooltip title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >

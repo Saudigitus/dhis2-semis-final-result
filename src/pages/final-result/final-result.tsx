@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { Table, useSchoolCalendarKey } from "dhis2-semis-components";
 import { InfoPage } from 'dhis2-semis-components'
-import { ProgramConfig } from 'dhis2-semis-types'
+import { D2I18n, ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
 import { TableDataRefetch, Modules } from "dhis2-semis-types"
 import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
@@ -9,7 +9,7 @@ import { useFinalResultConst } from '../../hooks/common/finalResultConst';
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
 import { useCheckFilters, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 
-export default function FinalResult() {
+export default function FinalResult({ i18n }: { i18n: D2I18n }) {
   const { viewPortWidth } = useViewPortWidth();
   const { urlParameters } = useUrlParams();
   const [selected, setSelected] = useState([])
@@ -28,27 +28,27 @@ export default function FinalResult() {
   const getInfoPageContent = () => {
     if (sectionType === 'staff') {
       return {
-        title: "SEMIS-Staff-Re-enrollment",
-        sectionTitle: "Follow the instructions to proceed:",
+        title: i18n.t("SEMIS-Staff-Re-enrollment"),
+        sectionTitle: `${i18n.t("Follow the instructions to proceed")}:`,
         instructions: [
-          "Select the Organization unit you want to view data",
-          "Use global filters(Type of Staff, Employment Type and Academic Year)"
+          i18n.t("Select the Organization unit you want to view data"),
+          i18n.t("Use global filters(Type of Staff, Employment Type and Academic Year)")
         ]
       }
     }
     return {
-      title: "SEMIS-Final-Result",
-      sectionTitle: "Follow the instructions to proceed:",
+      title: i18n.t("SEMIS-Final-Result"),
+      sectionTitle: `${i18n.t("Follow the instructions to proceed")}:`,
       instructions: [
-        "Select the Organization unit you want to view data",
-        "Use global filters(Class, Grade and Academic Year)"
+        i18n.t("Select the Organization unit you want to view data"),
+        i18n.t("Use global filters(Class, Grade and Academic Year)")
       ]
     }
   }
 
   const infoPageContent = getInfoPageContent()
-  const tableTitle = sectionType === 'staff' ? 'Staff Re-enrollment' : 'Final Results'
-  const inactiveRowMessage = sectionType === 'staff' ? 'Terminated' : 'Dropout'
+  const tableTitle = sectionType === 'staff' ? i18n.t('Staff Re-enrollment') : i18n.t('Final Results')
+  const inactiveRowMessage = sectionType === 'staff' ? i18n.t('Terminated') : i18n.t('Dropout')
 
   useEffect(() => {
     setSelected([])
@@ -101,6 +101,7 @@ export default function FinalResult() {
               loading={loading}
               rightElements={
                 <EnrollmentActionsButtons
+                  i18n={i18n}
                   selected={selected}
                   selectedDataStoreKey={dataStoreData}
                   programData={programData as unknown as ProgramConfig}

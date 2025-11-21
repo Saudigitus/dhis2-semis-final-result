@@ -9,7 +9,7 @@ import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from 
 import { format } from "date-fns";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
 
-export default function AsssignFinalResult({ selected }: { selected: any[] }) {
+export default function AsssignFinalResult({ selected, i18n}: { selected: any[],i18n:any }) {
     const { dataStoreData } = useGetSelectedKeys()
     const { "final-result": finalResult, trackedEntityType } = dataStoreData || {}
     const { dataElements } = useGetDataElements({
@@ -123,8 +123,8 @@ export default function AsssignFinalResult({ selected }: { selected: any[] }) {
             {
                 open && <ModalComponent
                     children={<WithPadding>
-                        <NoticeBox title={`WARNING! ${selected.length} rows will be affected`} warning>
-                            No one will be able to access this program. Add some Organisation Units to the access list.
+                        <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
+                            {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
                         </NoticeBox>
                         <WithBorder type="all" >
                             <WithPadding>
