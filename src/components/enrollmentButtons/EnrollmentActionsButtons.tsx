@@ -99,7 +99,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,
                 </Tooltip>
 
                 <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""} >
-                    <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm(i18n).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
+                    <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm({ i18n }).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
                 <Tooltip title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
