@@ -13,8 +13,14 @@ import frTranslations from './fr/translations.json'
 import ptTranslations from './pt/translations.json'
 
 const namespace = 'default'
+
 i18n.addResources('en', namespace, enTranslations)
+i18n.addResources('en', namespace, enTranslations)
+
 i18n.addResources('fr', namespace, frTranslations)
+i18n.addResources('fr', namespace, frTranslations)
+
+i18n.addResources('pt', namespace, ptTranslations)
 i18n.addResources('pt', namespace, ptTranslations)
 
 export default i18n
