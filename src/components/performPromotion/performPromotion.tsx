@@ -31,7 +31,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
     const finalResultConfig = dataStoreData?.["final-result"];
     const statusDataElementId = finalResultConfig?.status;
-    const validStatusValues = (finalResultConfig as any)?.validStatusValue || [];
+    const validStatusValues = (finalResultConfig as any)?.dropoutStatusValues || [];
     const hasValidConfiguration = validStatusValues.length > 0;
 
     const nonPromotableEntities = selected.filter(entity => {
@@ -41,7 +41,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
         const hasValidStatus = dvs.some((dv: any) =>
             dv.dataElement === statusDataElementId &&
-            validStatusValues.map((v: string) => v.toLowerCase()).includes(dv.value?.toLowerCase())
+            !validStatusValues.map((v: string) => v.toLowerCase()).includes(dv.value?.toLowerCase())
         );
 
         return !hasValidStatus;

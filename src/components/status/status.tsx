@@ -19,28 +19,14 @@ const styles = {
     },
 };
 
-export function statusComponent({ status }: { status: string }) {
-    const getStatusStyle = (status: string) => {
-        switch (status.toLowerCase()) {
-            case 'promoted':
-                return styles.promoted;
-            case 'completed':
-                return styles.completed;
-            case 'failed':
-                return styles.failed;
-            case 'dropout':
-                return styles.dropout;
-            default:
-                return {};
-        }
-    };
+export function statusComponent({ option }: { option: { style: { color: string }, label: string, value: string } }) {
 
     return (
         <span style={{
             ...styles.finalResultStatus,
-            ...getStatusStyle(status)
+            ...option?.style
         }}>
-            {status}
+            {option.label}
         </span>
     )
 
