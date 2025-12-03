@@ -10,14 +10,14 @@ export const useFinalResultConst = ({ updateData, data }: { data: any[], updateD
         let copy = [...data]
         for (let index = 0; index < copy.length; index++) {
             if (copy[index][status!]) {
-                const option = programData?.programStages
+                const option: any = programData?.programStages
                     ?.find(x => x.id === stage)?.programStageDataElements
                     ?.find(x => x.dataElement.id === status)
                     ?.dataElement.optionSet.options
-                    ?.find(x => x.value === copy[index][status!])?.label
+                    ?.find(x => x.value === copy[index][status!])
 
 
-                copy[index][status!] = option ? statusComponent({ status: option! }) : undefined
+                copy[index][status!] = option ? statusComponent({ option: option! }) : undefined
             }
         }
 

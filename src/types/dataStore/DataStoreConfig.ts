@@ -52,6 +52,7 @@ interface finalResult {
     programStage: string
     status: string
     validStatusValue?: string[]
+    dropoutStatusValues?: string[]
 }
 
 interface dataStoreRecord {

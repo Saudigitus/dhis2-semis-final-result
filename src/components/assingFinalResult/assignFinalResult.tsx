@@ -8,10 +8,11 @@ import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
 import { format } from "date-fns";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
+import { dataStoreRecord } from "src/types/dataStore/DataStoreConfig";
 
-export default function AsssignFinalResult({ selected, i18n}: { selected: any[],i18n:any }) {
+export default function AsssignFinalResult({ selected, i18n }: { selected: any[], i18n: any }) {
     const { dataStoreData } = useGetSelectedKeys()
-    const { "final-result": finalResult, trackedEntityType } = dataStoreData || {}
+    const { "final-result": finalResult, trackedEntityType } = dataStoreData as unknown as dataStoreRecord || {}
     const { dataElements } = useGetDataElements({
         programStageId: finalResult?.programStage || '',
         type: "programStage"
@@ -47,7 +48,7 @@ export default function AsssignFinalResult({ selected, i18n}: { selected: any[],
                         {
                             trackedEntity: tei?.trackedEntity,
                             enrollment: tei?.enrollmentId,
-                            status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
+                            status: finalResult?.dropoutStatusValues?.includes(values[frStatus]) ? "CANCELLED" : "COMPLETED",
                             orgUnit: selectedEnrollmentFrEvent?.orgUnit,
                             program: selectedEnrollmentFrEvent?.program,
                             enrolledAt: selectedEnrollmentFrEvent?.occurredAt,
@@ -82,7 +83,7 @@ export default function AsssignFinalResult({ selected, i18n}: { selected: any[],
                             trackedEntityType: trackedEntityType,
                             enrolledAt: format(new Date(), "yyyy-MM-dd"),
                             occurredAt: format(new Date(), "yyyy-MM-dd"),
-                            status: values[frStatus] === "Dropout" ? "CANCELLED" : "COMPLETED",
+                            status: finalResult?.dropoutStatusValues?.includes(values[frStatus]) ? "CANCELLED" : "COMPLETED",
                             events: [
                                 {
                                     orgUnit: school,
