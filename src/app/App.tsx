@@ -12,16 +12,16 @@ const MyApp = ({ i18n }: { i18n: D2I18n }) => {
     const translation: any = i18n ? i18n : translator
 
     return (
-        <AppWrapper
-            baseUrl={baseUrl}
-            i18n={translation}
-            dataStoreKey="dataStore/semis/values"
-            schoolCalendarKey='dataStore/semis/schoolCalendar'
-        >
-            <HashRouter>
+        // <AppWrapper
+        //     baseUrl={baseUrl}
+        //     i18n={translation}
+        //     dataStoreKey="dataStore/semis/values"
+        //     schoolCalendarKey='dataStore/semis/schoolCalendar'
+        // >
+        //     <HashRouter>
                 <Router i18n={translation as unknown as any} />
-            </HashRouter >
-        </AppWrapper>
+        //     </HashRouter >
+        // </AppWrapper>
     )
 }
 
