@@ -74,8 +74,6 @@ export default function FinalResult({ i18n }: { i18n: D2I18n }) {
     if (tableData.data.length > 0) finalResultConst()
   }, [tableData])
 
-  console.log(updatedData)
-
   return (
     <div style={{ height: "85vh" }}>
       {
