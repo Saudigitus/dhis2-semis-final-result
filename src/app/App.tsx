@@ -7,19 +7,20 @@ import { HashRouter } from 'react-router-dom'
 import { D2I18n } from 'dhis2-semis-types'
 import translator from '../locales/index';
 
-const MyApp = ({ i18n }: { i18n: D2I18n }) => {
-    const { baseUrl } = useConfig()
+const MyApp = ({ i18n, baseUrl }: { i18n: D2I18n; baseUrl?: string }) => {
+    const { baseUrl: localBaseUrl } = useConfig()
     const translation: any = i18n ? i18n : translator
+    const useBaseUrl = baseUrl || localBaseUrl
 
     return (
         // <AppWrapper
-        //     baseUrl={baseUrl}
+        //     baseUrl={useBaseUrl}
         //     i18n={translation}
         //     dataStoreKey="dataStore/semis/values"
         //     schoolCalendarKey='dataStore/semis/schoolCalendar'
         // >
         //     <HashRouter>
-                <Router i18n={translation as unknown as any} />
+                <Router i18n={translation as unknown as any} baseUrl={useBaseUrl} />
         //     </HashRouter >
         // </AppWrapper>
     )
