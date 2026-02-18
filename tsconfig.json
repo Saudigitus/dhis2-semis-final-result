@@ -21,7 +21,12 @@
       "declarationDir": "./dist/declarations",
       "jsx": "preserve",
       "outDir": "./dist",
-      "rootDir": "./src",
+      "rootDir": "../..",
+      "paths": {
+        "dhis2-semis-components": ["../../libs/components/src"],
+        "dhis2-semis-functions": ["../../libs/functions/src"],
+        "dhis2-semis-types": ["../../libs/types/src"]
+      }
   },
   "exclude": [
       "node_modules",
