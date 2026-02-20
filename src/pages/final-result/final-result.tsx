@@ -9,7 +9,7 @@ import { useFinalResultConst } from '../../hooks/common/finalResultConst';
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
 import { useCheckFilters, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 
-export default function FinalResult({ i18n }: { i18n: D2I18n }) {
+export default function FinalResult({ i18n, baseUrl }: { i18n: D2I18n, baseUrl: string }) {
   const { viewPortWidth } = useViewPortWidth();
   const { urlParameters } = useUrlParams();
   const [selected, setSelected] = useState([])
@@ -105,6 +105,7 @@ export default function FinalResult({ i18n }: { i18n: D2I18n }) {
                   selected={selected}
                   selectedDataStoreKey={dataStoreData}
                   programData={programData as unknown as ProgramConfig}
+                  baseUrl={baseUrl}
                 />
               }
               setFilterState={setFilterState}

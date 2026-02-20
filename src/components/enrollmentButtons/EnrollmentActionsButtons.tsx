@@ -8,17 +8,15 @@ import { DataExporter, DataImporter, CustomDropdown as DropdownButton, useSchool
 import AsssignFinalResult from '../assingFinalResult/assignFinalResult';
 import PerformPromotion from '../performPromotion/performPromotion';
 import ShowStats from '../stats/showStats';
-import { useConfig } from '@dhis2/app-runtime';
 import { Tooltip } from '@mui/material';
 import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 import { staticForm } from "../../constants/searchEnrollmentForm";
 import { getContextualLabels } from '../../utils/common/getContextualLabels';
 import { useSetRecoilState } from 'recoil';
 
-function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected, i18n }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey, i18n: any }) {
+function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected, i18n, baseUrl }: { selected: any, programData: ProgramConfig, selectedDataStoreKey: selectedDataStoreKey, i18n: any, baseUrl: string }) {
     const { urlParameters } = useUrlParams();
     const schoolCalendar = useSchoolCalendarKey()
-    const { baseUrl } = useConfig()
     const { school: orgUnit, class: section, grade, academicYear, sectionType } = urlParameters;
     const { sectionName } = useGetSectionTypeLabel();
     const { dataStoreData } = useGetSelectedKeys()
