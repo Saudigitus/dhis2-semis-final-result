@@ -34,7 +34,7 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
         for (const tei of selected) {
             const frEvents = await getEvents({
                 program: tei?.programId, fields: "*",
-                trackedEntity: tei?.trackedEntity,
+                trackedEntities: tei?.trackedEntity,
                 programStage: finalResult?.programStage
             })
             const selectedEnrollmentFrEvent = frEvents.find((x: any) => x.enrollment === tei?.enrollmentId)

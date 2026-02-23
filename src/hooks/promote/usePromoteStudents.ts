@@ -36,13 +36,13 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
         for (const tei of selected) {
             const checkAlreadyPromoted = sectionType === 'staff'
                 ? []
-                : await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${schoolCalendar?.academicYear}:in:${values?.[schoolCalendar?.academicYear]}`] })
+                : await getEvents({ program: tei.programId, fields: "*", trackedEntities: tei.trackedEntity, programStage: dataStoreData.registration.programStage, filter: [`${schoolCalendar?.academicYear}:in:${values?.[schoolCalendar?.academicYear]}`] })
 
             if (checkAlreadyPromoted?.length === 0) {
                 let events = []
                 let socioEconomicDataValues: any = []
 
-                const socioEconomicEvent = await getEvents({ program: tei.programId, fields: "*", trackedEntity: tei.trackedEntity, programStage: socioEconomicPStage })
+                const socioEconomicEvent = await getEvents({ program: tei.programId, fields: "*", trackedEntities: tei.trackedEntity, programStage: socioEconomicPStage })
                 const event = socioEconomicEvent?.find((x: any) => x.enrollment === tei.enrollmentId)
 
                 if (event) {
