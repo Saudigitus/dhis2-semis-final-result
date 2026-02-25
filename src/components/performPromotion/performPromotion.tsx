@@ -31,20 +31,24 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
 
     const finalResultConfig = dataStoreData?.["final-result"];
     const statusDataElementId = finalResultConfig?.status;
-    const validStatusValues = (finalResultConfig as any)?.dropoutStatusValues || [];
-    const hasValidConfiguration = validStatusValues.length > 0;
+    const validStatusValues = (finalResultConfig as any)?.validStatusValue?.length
+        ? (finalResultConfig as any).validStatusValue
+        : (finalResultConfig as any)?.dropoutStatusValues || [];
+    const normalizeStatusValue = (value: any) => String(value ?? "").trim().toLowerCase();
+    const normalizedValidStatusValues = validStatusValues
+        .map((value: any) => normalizeStatusValue(value))
+        .filter(Boolean);
+    const hasValidConfiguration = Boolean(statusDataElementId) && normalizedValidStatusValues.length > 0;
 
     const nonPromotableEntities = selected.filter(entity => {
         const dvs = entity.frEvent?.dataValues ?? [];
 
-        if (dvs.length === 0) return true;
+        if (dvs.length === 0 || !statusDataElementId) return true;
 
-        const hasValidStatus = dvs.some((dv: any) =>
-            dv.dataElement === statusDataElementId &&
-            !validStatusValues.map((v: string) => v.toLowerCase()).includes(dv.value?.toLowerCase())
-        );
+        const statusDataValue = dvs.find((dv: any) => dv.dataElement === statusDataElementId);
+        if (!statusDataValue) return true;
 
-        return !hasValidStatus;
+        return !normalizedValidStatusValues.includes(normalizeStatusValue(statusDataValue.value));
     });
 
 
