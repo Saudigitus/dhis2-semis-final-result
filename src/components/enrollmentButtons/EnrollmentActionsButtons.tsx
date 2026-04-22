@@ -103,6 +103,7 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,
                 <Tooltip title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
                     <span>
                         <DropdownButton
+                            dataTest='fr-bulk-btn'
                             name={<span className={styles.work_buttons_text}>{labels.bulkButtonLabel}</span> as unknown as string}
                             disabled={!!(orgUnit == undefined || !areAllSelected() || academicYear == undefined)}
                             icon={<IconUserGroup16 />}

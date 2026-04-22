@@ -114,7 +114,7 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
 
     return (
         <>
-            <Button disabled={selected?.length == 0} onClick={() => {
+            <Button dataTest="fr-status-asign" disabled={selected?.length == 0} onClick={() => {
                 setOpen(true);
             }} icon={<IconAddCircle24 />}
             >
@@ -123,6 +123,7 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
 
             {
                 open && <ModalComponent
+                    dataTest="fr-modal-status-asingn"
                     children={<WithPadding>
                         <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
                             {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
