@@ -113,7 +113,7 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
 
 
     return (
-        <div data-test={"fr-assign-final-result-container"}>
+        <div data-test={"assign-final-result-container"}>
             <Button
                 onClick={() => {
                     setOpen(true);

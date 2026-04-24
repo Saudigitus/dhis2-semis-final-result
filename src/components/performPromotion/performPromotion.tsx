@@ -138,7 +138,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
             >
                 <Button disabled={!hasValidConfiguration || nonPromotableEntities?.length > 0 || selected.length == 0} onClick={() => {
                     setOpen(true);
-                }} icon={<IconAddCircle24 />}
+                }} dataTest="fr-promote-btn" icon={<IconAddCircle24 />}
                 >
                     <span>{labels.promoteButtonLabel}</span>
                 </Button >

@@ -100,10 +100,10 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,
                     <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm({ i18n }).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
-                <Tooltip data-test={"final-result-bulk-operations-tooltip"} title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
+                <Tooltip data-test={"fr-bulk-operations-tooltip"} title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
                     <span>
                         <DropdownButton
-                            dataTest={'final-result-bulk-operations-dropdown'}
+                            dataTest='fr-bulk-operations-dropdown'
                             name={<span className={styles.work_buttons_text}>{labels.bulkButtonLabel}</span> as unknown as string}
                             disabled={!!(orgUnit == undefined || !areAllSelected() || academicYear == undefined)}
                             icon={<IconUserGroup16 />}

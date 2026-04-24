@@ -42,7 +42,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                     {stats?.conflicts?.length > 0 ?
                         <>
                             <ButtonStrip>
-                                <Button small icon={<InfoOutlined />} onClick={() => setShowDetails(!showDetails)}>More details</Button>
+                                <Button dataTest="fr-btn-show-details" small icon={<InfoOutlined />} onClick={() => setShowDetails(!showDetails)}>More details</Button>
                             </ButtonStrip>
                             <br />
                             <span style={{ color: "red" }}>{labels.conflictMessage}</span>
@@ -65,7 +65,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                     </Collapse>
 
                     <ButtonStrip end>
-                        <Button primary={true} onClick={() => { setOpen(false); setRefetch(prev => (!prev)) }} >
+                        <Button dataTest="fr-btn-close-modal" primary={true} onClick={() => { setOpen(false); setRefetch(prev => (!prev)) }} >
                             Close
                         </Button>
                     </ButtonStrip>
