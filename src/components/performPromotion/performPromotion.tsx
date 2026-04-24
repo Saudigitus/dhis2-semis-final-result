@@ -132,7 +132,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     };
 
     return (
-        <>
+        <div data-test=" ">
             <Tooltip
                 title={getTooltipMessage()}
             >
@@ -145,6 +145,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
             </Tooltip>
             {
                 open && <ModalComponent
+                    dataTest="perform-promotion-modal"
                     children={<WithPadding>
                         <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
                             {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
@@ -206,6 +207,6 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                     title={labels.promoteModalTitle}
                 />
             }
-        </>
+        </div>
     );
 }

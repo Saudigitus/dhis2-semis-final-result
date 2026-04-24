@@ -79,6 +79,7 @@ export default function FinalResult({ i18n, baseUrl }: { i18n: D2I18n, baseUrl: 
       {
         !(Boolean(schoolName) && Boolean(school)) ?
           <InfoPage
+            dataTest='final-result-info-page'
             title={infoPageContent.title}
             sections={[
               {

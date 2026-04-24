@@ -89,20 +89,21 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,
     ];
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} data-test={"fr-actions-buttons"}>
             <ShowStats open={open} setOpen={setOpen} stats={stats} />
             <ButtonStrip className={styles.work_buttons}>
-                <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""}>
+                <Tooltip data-test={"assign-final-result-tooltip"} title={orgUnit === null ? "Please select an organisation unit before" : ""}>
                     <AsssignFinalResult i18n={i18n} selected={selected} />
                 </Tooltip>
 
-                <Tooltip title={orgUnit === null ? "Please select an organisation unit before" : ""} >
+                <Tooltip data-test={"perform-promotion-tooltip"} title={orgUnit === null ? "Please select an organisation unit before" : ""} >
                     <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm({ i18n }).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
                 </Tooltip>
 
-                <Tooltip title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
+                <Tooltip data-test={"final-result-bulk-operations-tooltip"} title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
                     <span>
                         <DropdownButton
+                            dataTest={'final-result-bulk-operations-dropdown'}
                             name={<span className={styles.work_buttons_text}>{labels.bulkButtonLabel}</span> as unknown as string}
                             disabled={!!(orgUnit == undefined || !areAllSelected() || academicYear == undefined)}
                             icon={<IconUserGroup16 />}

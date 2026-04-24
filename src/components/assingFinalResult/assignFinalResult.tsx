@@ -113,16 +113,21 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
 
 
     return (
-        <>
-            <Button disabled={selected?.length == 0} onClick={() => {
-                setOpen(true);
-            }} icon={<IconAddCircle24 />}
+        <div data-test={"fr-assign-final-result-container"}>
+            <Button
+                onClick={() => {
+                    setOpen(true);
+                }}
+                disabled={selected?.length == 0}
+                icon={<IconAddCircle24 />}
+                dataTest="assign-final-result-button"
             >
                 <span>{labels.assignButtonLabel}</span>
             </Button >
 
             {
                 open && <ModalComponent
+                    dataTest="assing-final-result-modal"
                     children={<WithPadding>
                         <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
                             {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
@@ -153,6 +158,6 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
                     title={labels.assignModalTitle}
                 />
             }
-        </>
+        </div>
     );
 }

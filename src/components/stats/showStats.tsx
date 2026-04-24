@@ -24,6 +24,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
         <ModalComponent
             open={open}
             handleClose={() => setOpen(!open)}
+            dataTest="final-result-show-stats-modal"
             children={
                 <div>
                     <Tag positive icon={<IconCheckmarkCircle16 />}> {labels.summaryPreviewTag} </Tag>
@@ -33,8 +34,8 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                     <WithPadding />
 
                     <ButtonStrip>
-                        <SummaryCard color="success" label={labels.successLabel} value={stats?.posted ?? 0} />
-                        <SummaryCard color="error" label={labels.failureLabel} value={stats?.conflicts?.length ?? 0} />
+                        <SummaryCard dataTest="final-result-promoted-students-card" color="success" label={labels.successLabel} value={stats?.posted ?? 0} />
+                        <SummaryCard dataTest="final-result-no-promoted-students-card" color="error" label={labels.failureLabel} value={stats?.conflicts?.length ?? 0} />
                     </ButtonStrip>
 
                     <WithPadding />
@@ -49,7 +50,7 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                         : null}
                     <WithPadding />
 
-                    <Collapse in={showDetails} style={{ marginBottom: "20px" }} >
+                    <Collapse data-test='fr-stats-table' in={showDetails} style={{ marginBottom: "20px" }} >
                         <WithPadding>
                             <Table
                                 programConfig={programData!}
