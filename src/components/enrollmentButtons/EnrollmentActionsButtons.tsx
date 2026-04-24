@@ -93,11 +93,15 @@ function EnrollmentActionsButtons({ programData, selectedDataStoreKey, selected,
             <ShowStats open={open} setOpen={setOpen} stats={stats} />
             <ButtonStrip className={styles.work_buttons}>
                 <Tooltip data-test={"assign-final-result-tooltip"} title={orgUnit === null ? "Please select an organisation unit before" : ""}>
-                    <AsssignFinalResult i18n={i18n} selected={selected} />
+                    <span>
+                        <AsssignFinalResult i18n={i18n} selected={selected} />
+                    </span>
                 </Tooltip>
 
                 <Tooltip data-test={"perform-promotion-tooltip"} title={orgUnit === null ? "Please select an organisation unit before" : ""} >
-                    <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm({ i18n }).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
+                    <span>
+                        <PerformPromotion i18n={i18n} formData={[staticForm({ i18n }).registeringSchool, ...enrollmentDetails, staticForm({ i18n }).enrollmentDate]} openStats={setOpen} setStats={setStats} selected={selected} />
+                    </span>
                 </Tooltip>
 
                 <Tooltip data-test={"fr-bulk-operations-tooltip"} title={(section === null || grade === null || academicYear == undefined) ? labels.selectFiltersTooltip : ""} >
