@@ -8,7 +8,7 @@ import { WithBorder, ModalComponent, CustomForm, WithPadding } from "dhis2-semis
 import { useGetDataElements, useUploadEvents, useGetEvents, useUrlParams } from "dhis2-semis-functions";
 import { format } from "date-fns";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
-import { dataStoreRecord } from "src/types/dataStore/DataStoreConfig";
+import { dataStoreRecord } from "../../types/dataStore/DataStoreConfig";
 
 export default function AsssignFinalResult({ selected, i18n }: { selected: any[], i18n: any }) {
     const { dataStoreData } = useGetSelectedKeys()
@@ -34,7 +34,7 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
         for (const tei of selected) {
             const frEvents = await getEvents({
                 program: tei?.programId, fields: "*",
-                trackedEntities: tei?.trackedEntity,
+                trackedEntity: tei?.trackedEntity,
                 programStage: finalResult?.programStage
             })
             const selectedEnrollmentFrEvent = frEvents.find((x: any) => x.enrollment === tei?.enrollmentId)
