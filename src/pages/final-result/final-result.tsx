@@ -70,8 +70,12 @@ export default function FinalResult({ i18n, baseUrl }: { i18n: D2I18n, baseUrl: 
   }, [sectionType, filetrState, refetch, pagination.page, pagination.pageSize, academicYear, grade, section, school])
 
   useEffect(() => {
+    setPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }))
+  }, [sectionType, filetrState, academicYear, grade, section, school])
+
+  useEffect(() => {
     setPagination((prev) => ({ ...prev, totalPages: tableData.pagination.totalPages, totalElements: tableData.pagination.totalElements }))
-    if (tableData.data.length > 0) finalResultConst()
+    finalResultConst()
   }, [tableData])
 
   return (
