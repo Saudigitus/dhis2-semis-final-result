@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form } from "react-final-form";
 import { useSetRecoilState } from "recoil";
+import { useDataEngine } from "@dhis2/app-runtime";
 import { TableDataRefetch } from "dhis2-semis-types";
 import { NoticeBox, Button, IconAddCircle24 } from "@dhis2/ui";
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
@@ -26,6 +27,7 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
     const setRefetch = useSetRecoilState(TableDataRefetch);
     const labels = getContextualLabels(sectionType as string)
     const { hide, show } = useShowAlerts()
+    const engine = useDataEngine()
 
     async function formSubmit(values: any) {
         setLoading(true)
@@ -40,6 +42,10 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
                     programStage: finalResult?.programStage
                 })
                 const selectedEnrollmentFrEvent = frEvents.find((x: any) => x.enrollment === tei?.enrollmentId)
+                // The enrollment is sent with its own dates: the server requires them and they must not change (SEMIS-201).
+                const { enrollment } = await engine.query({
+                    enrollment: { resource: `tracker/enrollments/${tei?.enrollmentId}`, params: { fields: "enrolledAt,occurredAt" } }
+                }) as any
 
                 if (selectedEnrollmentFrEvent) {
                     teis.push({
@@ -53,6 +59,8 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
                                 status: finalResult?.dropoutStatusValues?.includes(values[frStatus]) ? "CANCELLED" : "COMPLETED",
                                 orgUnit: selectedEnrollmentFrEvent?.orgUnit,
                                 program: selectedEnrollmentFrEvent?.program,
+                                enrolledAt: enrollment?.enrolledAt,
+                                occurredAt: enrollment?.occurredAt,
                                 trackedEntityType: trackedEntityType,
                                 events: [
                                     {
@@ -81,8 +89,8 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
                                 trackedEntity: tei?.trackedEntity,
                                 enrollment: tei?.enrollmentId,
                                 trackedEntityType: trackedEntityType,
-                                enrolledAt: format(new Date(tei?.registrationEventOccurredAt), "yyyy-MM-dd"),
-                                occurredAt: format(new Date(tei?.registrationEventOccurredAt), "yyyy-MM-dd"),
+                                enrolledAt: enrollment?.enrolledAt,
+                                occurredAt: enrollment?.occurredAt,
                                 status: finalResult?.dropoutStatusValues?.includes(values[frStatus]) ? "CANCELLED" : "COMPLETED",
                                 events: [
                                     {
@@ -90,8 +98,9 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
                                         status: "COMPLETED",
                                         program: tei?.programId,
                                         programStage: finalResult?.programStage,
-                                        occurredAt: format(new Date(), "yyyy-MM-dd"),
-                                        scheduledAt: format(new Date(), "yyyy-MM-dd"),
+                                        // A missing final result record is created with the enrollment date, as at enrollment.
+                                        occurredAt: format(new Date(enrollment?.enrolledAt), "yyyy-MM-dd"),
+                                        scheduledAt: format(new Date(enrollment?.enrolledAt), "yyyy-MM-dd"),
                                         dataValues: [
                                             {
                                                 dataElement: frStatus,
@@ -106,14 +115,17 @@ export default function AsssignFinalResult({ selected, i18n }: { selected: any[]
                 }
             }
 
-            await uploadValues({ trackedEntities: teis }, 'COMMIT', 'CREATE_AND_UPDATE')
-                .then(() => { setLoading(false); setRefetch((prev: any) => (!prev)); setOpen(false) })
-                .catch(() => { setLoading(false); setOpen(false) })
+            const response = await uploadValues({ trackedEntities: teis }, 'COMMIT', 'CREATE_AND_UPDATE')
+            setLoading(false); setRefetch((prev: any) => (!prev)); setOpen(false)
 
-        } catch (error) {
+            // The server can refuse part of the data and still answer OK: show the first reason.
+            const refused = response?.validationReport?.errorReports?.[0]
+            if (refused) throw refused
+        } catch (error: any) {
             setLoading(false); setOpen(false)
 
-            show({ message: `Unknown error: ${error}`, type: { critical: true } })
+            const reason = error?.details?.validationReport?.errorReports?.[0]?.message ?? error?.message ?? String(error)
+            show({ message: `${i18n.t("The final result was not fully saved")}: ${reason}`, type: { critical: true } })
             setTimeout(hide, 5000);
         }
     }

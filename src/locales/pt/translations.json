@@ -59,5 +59,6 @@
     "students": "alunos",
     "The following students were not promoted. The server refused the new enrollment (see the reason)": "Os seguintes alunos não foram promovidos. O servidor recusou a nova matrícula (ver o motivo)",
     "The following staff were not re-enrolled. The server refused the new enrollment (see the reason)": "Os seguintes funcionários não foram reinscritos. O servidor recusou a nova inscrição (ver o motivo)",
-    "Reason": "Motivo"
+    "Reason": "Motivo",
+    "The final result was not fully saved": "O resultado final não foi totalmente gravado"
 }
