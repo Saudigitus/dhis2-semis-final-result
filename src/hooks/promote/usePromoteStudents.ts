@@ -15,6 +15,8 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
 
     async function promote(values: any) {
         setLoading(true)
+        // Each summary shows only this promotion: refusals of earlier promotions are not kept (SEMIS-202).
+        setStats({ posted: 0, conflicts: [], refused: [] })
         let enrollments: any[] = []
         const learners: any[] = []
         let registrationEvent: any = []
