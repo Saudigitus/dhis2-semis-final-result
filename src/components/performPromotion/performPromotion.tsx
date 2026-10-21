@@ -5,7 +5,7 @@ import { NoticeBox, Button, IconAddCircle24, CircularLoader, Center } from "@dhi
 import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 import { RulesEngine, useUrlParams } from "dhis2-semis-functions";
 import { usePromoteStudents } from "../../hooks/promote/usePromoteStudents";
-import { WithBorder, CustomForm, ModalComponent, WithPadding } from "dhis2-semis-components";
+import { WithBorder, CustomForm, ModalComponent, WithPadding, useSchoolCalendarKey } from "dhis2-semis-components";
 import { Tooltip } from "@mui/material";
 import { getContextualLabels } from "../../utils/common/getContextualLabels";
 import { useAccessibleOrgUnits } from "../../hooks/common/useAccessibleOrgUnits";
@@ -19,6 +19,8 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
     const { promote } = usePromoteStudents({ selected, setOpen: openStats, setStats, setOpenPerform: setOpen, setLoading })
     const labels = getContextualLabels(sectionType as string)
     const { orgUnits, loading: orgUnitsLoading, error: orgUnitsError, retry, hasOrgUnits } = useAccessibleOrgUnits()
+    const schoolCalendar = useSchoolCalendarKey()
+    const [enrollmentDateEdited, setEnrollmentDateEdited] = useState(false)
 
     const getInitialOrgUnit = () => {
         if (sectionType !== 'staff' || !orgUnits.length) return school;
@@ -74,6 +76,20 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
         runRulesEngine()
     }, [values])
 
+    // The new enrollment starts on the first day of the target academic year, not today,
+    // unless the user picks another date.
+    const academicYearField = (dataStoreData?.registration as any)?.academicYear || schoolCalendar?.academicYear
+    const targetYearStart = (schoolCalendar?.schoolCalendar ?? [])
+        .find(calendar => String(calendar?.academicYear?.code) === String(values?.[academicYearField]))
+        ?.academicYear?.startDate?.slice(0, 10)
+
+    const prefillEnrollmentDate = (fields: any[]) => {
+        if (enrollmentDateEdited || !targetYearStart) return fields;
+        return fields.map(field => field.name === 'enrollment_date'
+            ? { ...field, ruleAssigned: true, value: targetYearStart }
+            : field);
+    }
+
     const modifyRegisteringSchoolField = (fields: any[]) => {
         if (sectionType !== 'staff') return fields;
 
@@ -106,6 +122,8 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
             setSelectedOrgUnit(value);
         }
 
+        if (name === 'enrollment_date') setEnrollmentDateEdited(true);
+
         setValues(prev => ({
             ...prev,
             [name]: value,
@@ -137,6 +155,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                 title={getTooltipMessage()}
             >
                 <Button disabled={!hasValidConfiguration || nonPromotableEntities?.length > 0 || selected.length == 0} onClick={() => {
+                    setEnrollmentDateEdited(false);
                     setOpen(true);
                 }} icon={<IconAddCircle24 />}
                 >
@@ -146,9 +165,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
             {
                 open && <ModalComponent
                     children={<WithPadding>
-                        <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning>
-                            {i18n.t("No one will be able to access this program. Add some Organisation Units to the access list")}.
-                        </NoticeBox>
+                        <NoticeBox title={`${i18n.t("WARNING")}! ${selected.length} ${i18n.t("rows will be affected")}`} warning />
                         <WithPadding />
 
                         {sectionType === 'staff' && orgUnitsLoading && (
@@ -187,7 +204,7 @@ export default function PerformPromotion({ selected, setStats, openStats, formDa
                                                 storyBook: false,
                                                 name: labels.formName,
                                                 description: labels.formDescription,
-                                                fields: modifyRegisteringSchoolField(updatedVariables || []),
+                                                fields: prefillEnrollmentDate(modifyRegisteringSchoolField(updatedVariables || [])),
                                             }
                                         ]}
                                         storyBook={false}

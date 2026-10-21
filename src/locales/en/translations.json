@@ -1,7 +1,6 @@
 {
     "WARNING": "WARNING",
     "rows will be affected": "rows will be affected",
-    "No one will be able to access this program. Add some Organisation Units to the access list": "No one will be able to access this program. Add some Organisation Units to the access list",
     "Configuration error. ValidStatusValue not set in DataStore for {{sectionType}}": "Configuration error. ValidStatusValue not set in DataStore for {{sectionType}}",
     "Error loading organization units": "Error loading organization units",
     "Failed to load accessible organization units": "Failed to load accessible organization units",
@@ -48,8 +47,8 @@
     "No promoted students": "No promoted students",
     "Staff Re-enrollment Summary": "Staff Re-enrollment Summary",
     "Students Promotion Summary": "Students Promotion Summary",
-    "Staff re-enrollment preview": "Staff re-enrollment preview",
-    "Students promotion preview": "Students promotion preview",
+    "Staff re-enrollment completed": "Staff re-enrollment completed",
+    "Students promotion completed": "Students promotion completed",
     "The following staff were not re-enrolled. They already exist on the selected academic year": "The following staff were not re-enrolled. They already exist on the selected academic year",
     "The following students were not promoted. They already exist on the selected academic year": "The following students were not promoted. They already exist on the selected academic year",
     "Export Staff Re-enrollment": "Export Staff Re-enrollment",

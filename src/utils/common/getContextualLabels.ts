@@ -52,8 +52,8 @@ export const getContextualLabels = (sectionType: string) => {
             ? i18next.t('Staff Re-enrollment Summary')
             : i18next.t('Students Promotion Summary'),
         summaryPreviewTag: isStaff
-            ? i18next.t('Staff re-enrollment preview')
-            : i18next.t('Students promotion preview'),
+            ? i18next.t('Staff re-enrollment completed')
+            : i18next.t('Students promotion completed'),
         refusedMessage: isStaff
             ? i18next.t('The following staff were not re-enrolled. The server refused the new enrollment (see the reason)')
             : i18next.t('The following students were not promoted. The server refused the new enrollment (see the reason)'),
