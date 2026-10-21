@@ -56,5 +56,8 @@
     "Export Final Result": "Export Final Result",
     "staff": "staff",
     "student": "student",
-    "students": "students"
+    "students": "students",
+    "The following students were not promoted. The server refused the new enrollment (see the reason)": "The following students were not promoted. The server refused the new enrollment (see the reason)",
+    "The following staff were not re-enrolled. The server refused the new enrollment (see the reason)": "The following staff were not re-enrolled. The server refused the new enrollment (see the reason)",
+    "Reason": "Reason"
 }

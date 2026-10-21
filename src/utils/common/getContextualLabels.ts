@@ -54,6 +54,10 @@ export const getContextualLabels = (sectionType: string) => {
         summaryPreviewTag: isStaff
             ? i18next.t('Staff re-enrollment preview')
             : i18next.t('Students promotion preview'),
+        refusedMessage: isStaff
+            ? i18next.t('The following staff were not re-enrolled. The server refused the new enrollment (see the reason)')
+            : i18next.t('The following students were not promoted. The server refused the new enrollment (see the reason)'),
+        refusalReasonLabel: i18next.t('Reason'),
         conflictMessage: isStaff
             ? i18next.t('The following staff were not re-enrolled. They already exist on the selected academic year')
             : i18next.t('The following students were not promoted. They already exist on the selected academic year'),
