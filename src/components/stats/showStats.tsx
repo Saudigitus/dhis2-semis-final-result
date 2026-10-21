@@ -61,6 +61,8 @@ export default function ShowStats({ stats, open, setOpen }: { setOpen: (args: bo
                                 viewPortWidth={viewPortWidth}
                                 columns={refused.length > 0 ? [...(columns ?? []), reasonColumn] as any : columns}
                                 tableData={notPromoted}
+                                // The "#" column is numbered from the pagination; without it it shows NaN (SEMIS-202).
+                                pagination={{ page: 1, pageSize: notPromoted.length, totalPages: 1, totalElements: notPromoted.length }}
                                 showHeaderFilters={false}
                                 showWorkingListsContainer={false}
                                 paginate={false}
