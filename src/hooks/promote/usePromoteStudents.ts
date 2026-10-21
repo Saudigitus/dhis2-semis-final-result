@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import useGetSelectedKeys from "../config/useGetSelectedKeys";
 import { useGetEvents, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
 import { useGetUsedProgramStages, useSchoolCalendarKey } from "dhis2-semis-components";
+import { newUid, refusedEnrollments } from "../../utils/promote/promotionReport";
 
 export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform, setLoading }: { setLoading: (args: boolean) => void, setOpenPerform: any, setStats: (args: any) => void, selected: any[], setOpen: (args: boolean) => void }) {
     const { getEvents } = useGetEvents()
@@ -15,6 +16,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
     async function promote(values: any) {
         setLoading(true)
         let enrollments: any[] = []
+        const learners: any[] = []
         let registrationEvent: any = []
         let date = format(new Date(), 'yyyy-MM-dd')
         const socioEconomicPStage = dataStoreData["socio-economics"]?.programStage
@@ -62,6 +64,8 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                     events.push(returnEventStructure(programStage, []))
                 })
 
+                const enrollment = newUid()
+                learners.push(tei)
                 enrollments.push(
                     {
                         trackedEntity: tei.trackedEntity,
@@ -70,6 +74,7 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
                         attributes: tei.attributes || [],
                         enrollments: [
                             {
+                                enrollment,
                                 occurredAt: date,
                                 enrolledAt: values.enrollment_date,
                                 program: programData?.id,
@@ -82,9 +87,23 @@ export function usePromoteStudents({ selected, setOpen, setStats, setOpenPerform
             } else setStats((prev: any) => ({ ...prev, conflicts: [...prev.conflicts, tei] }))
         }
 
-        if (enrollments.length) await uploadValues({ trackedEntities: enrollments }, 'COMMIT', 'CREATE_AND_UPDATE')
+        // Count only what the server saved: a refused enrollment is listed with the server's reason (SEMIS-225).
+        let refused: Record<string, string> = {}
+        if (enrollments.length) {
+            const sent = enrollments.map(x => ({ trackedEntity: x.trackedEntity, enrollment: x.enrollments[0].enrollment }))
+            try {
+                refused = refusedEnrollments(await uploadValues({ trackedEntities: enrollments }, 'COMMIT', 'CREATE_AND_UPDATE'), sent)
+            } catch (error: any) {
+                refused = refusedEnrollments(error?.details, sent)
+                if (!Object.keys(refused).length) sent.forEach(x => { refused[x.trackedEntity] = error?.message ?? 'Not saved' })
+            }
+        }
 
-        setStats((prev: any) => ({ ...prev, posted: enrollments.length }))
+        setStats((prev: any) => ({
+            ...prev,
+            posted: enrollments.length - Object.keys(refused).length,
+            refused: learners.filter(tei => refused[tei.trackedEntity]).map(tei => ({ ...tei, refusalReason: refused[tei.trackedEntity] }))
+        }))
         setOpenPerform(false)
         setLoading(false)
         setOpen(true)
