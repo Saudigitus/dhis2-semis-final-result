@@ -59,5 +59,6 @@
     "students": "students",
     "The following students were not promoted. The server refused the new enrollment (see the reason)": "The following students were not promoted. The server refused the new enrollment (see the reason)",
     "The following staff were not re-enrolled. The server refused the new enrollment (see the reason)": "The following staff were not re-enrolled. The server refused the new enrollment (see the reason)",
-    "Reason": "Reason"
+    "Reason": "Reason",
+    "The final result was not fully saved": "The final result was not fully saved"
 }
